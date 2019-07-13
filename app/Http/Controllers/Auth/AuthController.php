@@ -32,7 +32,13 @@ class AuthController extends Controller
                     'password' => $request->password,
                 ]
             ]);
-            return json_decode((string) $response->getBody(), true);
+            $response = json_decode((string) $response->getBody(), true);
+
+            $user = User::where('email', $request->email)->firstOrFail();
+
+            $user['tokens'] = $response;
+
+            return $user;
         } catch (BadResponseException $error) {
             if ($error->getCode() === 400) {
                 return response()->json('Invalid Request. Please enter an email and a password.', $error->getCode());
