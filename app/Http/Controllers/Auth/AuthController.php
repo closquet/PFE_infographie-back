@@ -73,5 +73,36 @@ class AuthController extends Controller
         });
         return response()->json('Logged out successfully', 200);
     }
+
+    /**
+     * Refresh token with proxy to /oauth/token
+     *
+     * @param Request $request ($request->refresh_token)
+     * @return \Illuminate\Http\JsonResponse|mixed (new password token)
+     */
+    public function refresh(Request $request)
+    {
+        $http = new Client;
+
+        try {
+            $response = $http->post(env('APP_URL') . '/oauth/token', [
+                'form_params' => [
+                    'grant_type' => 'refresh_token',
+                    'client_id' => env('PASSWORD_CLIENT_ID'),
+                    'client_secret' => env('PASSWORD_CLIENT_SECRET'),
+                    'refresh_token' => $request->refresh_token,
+                    'scope' => '',
+                ]
+            ]);
+            return json_decode((string) $response->getBody(), true);
+        } catch (BadResponseException $error) {
+            if ($error->getCode() === 400) {
+                return response()->json('Invalid Request. Please enter an email and a password.', $error->getCode());
+            } else if ($error->getCode() === 401) {
+                return response()->json('Your credentials are incorrect. Please try again', $error->getCode());
+            }
+            return response()->json('Something went wrong on the server.', $error->getCode());
+        }
+    }
 }
 
