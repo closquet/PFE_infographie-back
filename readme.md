@@ -1,72 +1,66 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# Projet de fin d’étude
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+    Nom du projet : Alea-food
+    Nom de l’étudiant : Eric Closquet
+    Groupe : 2384
+    Année : 2017-2018
+    
+    
+## Pourquoi ?
 
-## About Laravel
+J’ai remarqué que régulièrement, dans mon enfance mes parents se posaient chaque soir la même question, « qu’est-ce qu’on mange ? ». 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Et depuis que je suis en ménage cela se produit quand le soir arrive, ma femme et moi nous posons la même question avec des réponse du genre « ah non j’ai demandé avant » ou encore « j’ai choisi hier, à ton tour ».
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+J’ai demandé à plusieurs personnes de mon entourage et apparemment nous ne sommes pas un cas isolé.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Scénarios
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Bob Dupont :
+Bob rentre après une journée de travail et est fatigué, il ne sait pas quoi faire pour le souper.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1400 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Il est tard et il n’a pas envie d’aller au magasin pour acheter de nouveaux ingrédients, donc il lance l’application sur son smartphone et ajoute les ingrédients qu’il a dans son frigo en critère de recherche.
 
-## Laravel Sponsors
+Le résultat ne lui plait pas et il relance la recherche pour enfin obtenir la recette qui lui convient.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
+### Sophie Tartare :
+Sophie compte préparer le repas quand soudain son frère et sa petite famille arrivent à l’improviste. Son frère est venu de loin pour lui faire la surprise donc Sophie lui propose de manger avec eux.
 
-## Contributing
+N’ayant rien prévu, ce qu’elle comptait cuisiner ne suffira pas pour ces personnes supplémentaires.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Du coup elle utilise l’application et choisi en critère de « nombre de personnes » « 7 », son frère étant intolérant au gluten, elle le précise dans le critère « allergies supplémentaires » « gluten » et enfin pour marquer le coup elle précise le thème « cuisine chinoise ».
 
-## Security Vulnerabilities
+Elle obtient une recette et se rend au magasin pour acheter les aliments manquants.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+À la fin du repas elle demande si tout le monde a aimé et obtient un grand oui, satisfaite de cette recette, elle reprend son application et met un 4/5 et commente la recette.
 
-## License
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Fonctionnalités souhaitées :
+-  Afficher une 1 recette aléatoire selon des critères:
+    -  Critères de profile
+        -  Aliments déprécies.
+        -  Allergies.
+    -  Critères ponctuels lors d’une recherche
+        -  Nombre de personnes.
+        -  Allergies supplémentaires
+        -  Aliments déprécies supplémentaires.
+        -  Aliment devant être présent (Dispo dans le frigo)
+        -  Type de plat (repas, dessert).
+        -  Origine (Cuisine française, chinoise…)
+-  Partager une recette sur les réseaux sociaux.
+-  Afficher les 5 recettes les mieux notées.
+-  Créer un compte online permet :
+    -  D’enregistrer les critères du profil en ligne.
+    -  D’avoir un historique des recettes consultées.
+    -  De noter les recettes de 0 à 5
+    -  De commenter une recette
+    -  De publier ses propres recettes (participatif).
+    -  Signaler une recette d’utilisateur.
+-  Modération et administration via appli Vue.js (web).
+
+
+## Technique :
+- Front : Vue.JS
+- Back : Laravel
