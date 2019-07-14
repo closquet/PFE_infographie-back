@@ -15,3 +15,8 @@
 Route::get('/reset-password', function () {
     return request();
 })->name('web.reset-password');
+
+Route::get('/login', function () {
+    ;
+    return response()->json(["message" => "Unauthenticated"])->setStatusCode(401);
+})->name('login');
