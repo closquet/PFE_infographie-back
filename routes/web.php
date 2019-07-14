@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('web.root');
+//TODO: handle this in front application
+Route::get('/reset-password', function () {
+    return request();
+})->name('web.reset-password');
