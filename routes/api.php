@@ -32,5 +32,7 @@ Route::post('/password/reset', 'Auth\PasswordResetController@reset');
 Route::group(['middleware' => ['auth:api']], function () {
 
     Route::get('/user', 'UserController@showloggedInUser')->name('user.showloggedInUser');
+    Route::post('/user/avatar', 'UserController@update_avatar')->name('user.update_avatar');
+    Route::delete('/user/avatar', 'UserController@delete_avatar')->name('user.delete_avatar');
 
 });
