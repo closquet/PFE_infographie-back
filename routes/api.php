@@ -29,6 +29,8 @@ Route::post('/password/reset', 'Auth\PasswordResetController@reset');
 
 
 Route::group(['middleware' => ['auth:api']], function () {
+
     Route::post('/logout', 'Auth\AuthController@logout')->name('user.logout');
+    Route::get('/user', 'UserController@showloggedInUser')->name('user.show');
 
 });
