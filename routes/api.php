@@ -26,7 +26,10 @@ Route::get('/password/find/{token}', 'Auth\PasswordResetController@find');
 Route::post('/password/reset', 'Auth\PasswordResetController@reset');
 
 
+Route::group(['middleware' => ['auth:api', 'isadmin']], function () {
+    Route::get('/users', 'UserController@index')->name('user.index');
 
+});
 
 
 Route::group(['middleware' => ['auth:api']], function () {
