@@ -9,10 +9,23 @@ use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
-    public function showloggedInUser (Request $request) {
+    /**
+     * get data of logged in user
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function showloggedInUser (Request $request)
+    {
         return $request->user();
     }
 
+    /**
+     * add or change the avatar of logged in user
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update_avatar(Request $request)
     {
         $request->validate([
@@ -48,7 +61,12 @@ class UserController extends Controller
 
     }
 
-
+    /**
+     * delete the avatar of logged in user
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete_avatar(Request $request)
     {
         $user = Auth::user();
