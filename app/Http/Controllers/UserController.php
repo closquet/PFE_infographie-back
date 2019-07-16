@@ -2,6 +2,7 @@
 
 namespace aleafoodapi\Http\Controllers;
 
+use aleafoodapi\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -79,6 +80,15 @@ class UserController extends Controller
             "message" => "The avatar has been deleted",
             "user" => $user,
         ])->setStatusCode(200);
+    }
 
+    /**
+     * get all users
+     *
+     * @return User[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function index()
+    {
+        return User::all();
     }
 }
