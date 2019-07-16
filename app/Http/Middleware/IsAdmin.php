@@ -15,13 +15,7 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-        $user = $request->user();
-
-        if (!$user) {
-            return response()->json(["message" => "Unauthenticated"])->setStatusCode(401);
-        }
-
-        if ($user && $user->is_admin) {
+        if ($request->user()->is_admin) {
             return $next($request);
         }
 
