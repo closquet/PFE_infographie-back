@@ -55,10 +55,7 @@ class UserController extends Controller
         $user->avatar = $path;
         $user->save();
 
-        return response()->json([
-            "message" => "The avatar has been updated",
-            "user" => $user,
-        ])->setStatusCode(200);
+        return response()->json($user)->setStatusCode(200);
 
     }
 
@@ -76,10 +73,7 @@ class UserController extends Controller
         $user->avatar = null;
         $user->save();
 
-        return response()->json([
-            "message" => "The avatar has been deleted",
-            "user" => $user,
-        ])->setStatusCode(200);
+        return response()->json($user)->setStatusCode(200);
     }
 
     /**

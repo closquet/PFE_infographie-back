@@ -41,11 +41,11 @@ class AuthController extends Controller
             return $user;
         } catch (BadResponseException $error) {
             if ($error->getCode() === 400) {
-                return response()->json('Invalid Request. Please enter an email and a password.', $error->getCode());
+                return response()->json(['error' => 'Invalid Request. Please enter an email and a password.'], $error->getCode());
             } else if ($error->getCode() === 401) {
-                return response()->json('Your credentials are incorrect. Please try again', $error->getCode());
+                return response()->json(['error' => 'Your credentials are incorrect. Please try again'], $error->getCode());
             }
-            return response()->json('Something went wrong on the server.', $error->getCode());
+            return response()->json(['error' => 'Something went wrong on the server.'], $error->getCode());
         }
     }
 
@@ -77,7 +77,7 @@ class AuthController extends Controller
         auth()->user()->tokens->each(function ($token, $key) {
             $token->delete();
         });
-        return response()->json('Logged out successfully', 200);
+        return response()->json(['message' => 'Logged out successfully'], 200);
     }
 
     /**
