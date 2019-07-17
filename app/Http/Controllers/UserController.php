@@ -16,7 +16,7 @@ class UserController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function showloggedInUser (Request $request)
+    public function showLoggedInUser (Request $request)
     {
         return $request->user();
     }
@@ -27,7 +27,7 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update_avatar(Request $request)
+    public function updateAvatar(Request $request)
     {
         $request->validate([
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -68,7 +68,7 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete_avatar(Request $request)
+    public function deleteAvatar(Request $request)
     {
         $user = Auth::user();
 

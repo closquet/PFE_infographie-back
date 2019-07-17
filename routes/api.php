@@ -34,9 +34,9 @@ Route::group(['middleware' => ['auth:api', 'isadmin']], function () {
 
 Route::group(['middleware' => ['auth:api']], function () {
 
-    Route::get('/user', 'UserController@showloggedInUser')->name('user.showloggedInUser');
-    Route::post('/user/avatar', 'UserController@update_avatar')->name('user.update_avatar');
-    Route::delete('/user/avatar', 'UserController@delete_avatar')->name('user.delete_avatar');
+    Route::get('/user', 'UserController@showLoggedInUser')->name('user.showloggedInUser');
+    Route::post('/user/avatar', 'UserController@updatAvatar')->name('user.update_avatar');
+    Route::delete('/user/avatar', 'UserController@deleteAvatar')->name('user.delete_avatar');
 
     Route::get('/users/{slug}', 'UserController@showBySlug')->name('user.showBySlug');
 
