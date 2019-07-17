@@ -22,6 +22,37 @@ class UserController extends Controller
     }
 
     /**
+     * edit the data of logged in user
+     *
+     * @param Request $request
+     */
+    public function editLoggedInUser (Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        $user = Auth::user();
+
+
+        if ($request->name != $user->name){
+            $user->slug = null;
+            $user->update([
+                'name' => $request->name,
+                'description' => $request->description
+            ]);
+        }else {
+            $user->description = $request->description;
+            $user->save();
+        }
+
+
+
+        return response()->json($user)->setStatusCode(200);
+    }
+
+    /**
      * add or change the avatar of logged in user
      *
      * @param Request $request
