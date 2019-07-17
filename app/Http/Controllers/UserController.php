@@ -91,4 +91,29 @@ class UserController extends Controller
     {
         return User::all();
     }
+
+    /**
+     * get user's data by slug
+     *
+     * @param $slug
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showBySlug($slug)
+    {
+        $user = User::where('slug', $slug)->first();
+
+        if ($user){
+            return response()->json([
+                "name"=> $user->name,
+                "slug"=> $user->slug,
+                "avatar"=> $user->avatar,
+                "description"=> $user->description,
+                "email"=> $user->email,
+            ])->setStatusCode(200);
+        }
+
+        return response()->json([
+            "error" => "User not found",
+        ])->setStatusCode(404);
+    }
 }
