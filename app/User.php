@@ -52,4 +52,9 @@ class User extends Authenticatable
             ]
         ];
     }
+
+    public function allergens()
+    {
+        return $this->belongsToMany('aleafoodapi\Allergen');
+    }
 }
