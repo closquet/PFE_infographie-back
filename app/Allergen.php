@@ -21,4 +21,9 @@ class Allergen extends Model
     {
         return $this->belongsToMany('aleafoodapi\User');
     }
+
+    public function ingredients()
+    {
+        return $this->belongsToMany('aleafoodapi\Ingredients');
+    }
 }
