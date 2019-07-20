@@ -18,7 +18,8 @@ class UserController extends Controller
      */
     public function showLoggedInUser (Request $request)
     {
-        return $request->user();
+        $user = User::findOrFail($request->user()->id);
+        return $user;
     }
 
     /**
@@ -31,23 +32,25 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
+            'allergens' => 'array',
+            'allergens.*' => 'integer|exists:allergens,id',
         ]);
 
         $user = Auth::user();
 
+            $user->allergens()->sync($request->allergens);
+            $user->description = $request->description;
 
         if ($request->name != $user->name){
             $user->slug = null;
             $user->update([
                 'name' => $request->name,
-                'description' => $request->description
             ]);
         }else {
-            $user->description = $request->description;
             $user->save();
         }
 
-
+        $user = $user->fresh();
 
         return response()->json($user)->setStatusCode(200);
     }

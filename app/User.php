@@ -57,4 +57,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('aleafoodapi\Allergen');
     }
+
+    protected $with = ['allergens'];
 }
