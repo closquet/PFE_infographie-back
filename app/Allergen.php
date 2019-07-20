@@ -15,6 +15,8 @@ class Allergen extends Model
         'name'
     ];
 
+    protected $hidden = array('pivot');
+
     public function users()
     {
         return $this->belongsToMany('aleafoodapi\User');
