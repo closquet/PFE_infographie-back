@@ -14,7 +14,6 @@ class CreateAllergenUserTable extends Migration
     public function up()
     {
         Schema::create('allergen_user', function (Blueprint $table) {
-            $table->bigIncrements('id');
             $table->bigInteger('allergen_id')->unsigned()->index();
             $table->bigInteger('user_id')->unsigned()->index();
             $table->timestamps();
