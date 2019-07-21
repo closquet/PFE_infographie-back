@@ -4,6 +4,7 @@ namespace aleafoodapi\Http\Controllers;
 
 use aleafoodapi\Allergen;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AllergenController extends Controller
 {
@@ -43,7 +44,10 @@ class AllergenController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|min:2|max:30|unique:allergens',
+            'name' => [
+                'required','string','min:2','max:30',
+                Rule::unique('allergens')->ignore($id),
+            ],
         ]);
 
         $allergen = Allergen::find($id);
