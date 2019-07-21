@@ -37,6 +37,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'isadmin']], fun
     Route::post('/ingredients', 'IngredientController@store')->name('ingredient.store');
     Route::put('/ingredients/{id}', 'IngredientController@update')->name('ingredient.update');
     Route::delete('/ingredients/{id}', 'IngredientController@delete')->name('ingredient.delete');
+
+    // Ingredient-categories (index & show in public routes)
+    Route::post('/ingredient-categories', 'IngredientCategoryController@store')->name('ingredientCategory.store');
+    Route::put('/ingredient-categories/{id}', 'IngredientCategoryController@update')->name('ingredientCategory.update');
+    Route::delete('/ingredient-categories/{id}', 'IngredientCategoryController@delete')->name('ingredientCategory.delete');
 });
 
 // Logged in routes
@@ -61,3 +66,7 @@ Route::get('/allergens/{id}', 'AllergenController@show')->name('allergen.show');
 // Ingredients
 Route::get('/ingredients', 'IngredientController@index')->name('ingredient.index');
 Route::get('/ingredients/{id}', 'IngredientController@show')->name('ingredient.show');
+
+// Ingredient-categories
+Route::get('/ingredient-categories', 'IngredientCategoryController@index')->name('ingredientCategory.index');
+Route::get('/ingredient-categories/{id}', 'IngredientCategoryController@show')->name('ingredientCategory.show');
