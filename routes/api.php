@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,19 +26,29 @@ Route::post('/password/create', 'Auth\PasswordResetController@create');
 Route::get('/password/find/{token}', 'Auth\PasswordResetController@find');
 Route::post('/password/reset', 'Auth\PasswordResetController@reset');
 
-
-Route::group(['middleware' => ['auth:api', 'isadmin']], function () {
-    Route::get('/users', 'UserController@index')->name('user.index');
-
+// Logged in admin routes
+Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'isadmin']], function () {
+    // Allergens (index & show in public routes)
+    Route::post('/allergens', 'AllergenController@store')->name('allergen.store');
+    Route::put('/allergens/{id}', 'AllergenController@update')->name('allergen.update');
+    Route::delete('/allergens/{id}', 'AllergenController@delete')->name('allergen.delete');
 });
 
-
+// Logged in routes
 Route::group(['middleware' => ['auth:api']], function () {
-
     Route::get('/user', 'UserController@showLoggedInUser')->name('user.showLoggedInUser');
     Route::put('/user', 'UserController@editLoggedInUser')->name('user.updateLoggedInUser');
     Route::post('/user/avatar', 'UserController@updatAvatar')->name('user.update_avatar');
     Route::delete('/user/avatar', 'UserController@deleteAvatar')->name('user.delete_avatar');
 
-    Route::get('/users/{slug}', 'UserController@showBySlug')->name('user.showBySlug');
+
 });
+
+// Public routes
+// Users
+Route::get('/users', 'UserController@index')->name('user.index');
+Route::get('/users/{slug}', 'UserController@showBySlug')->name('user.showBySlug');
+
+// Allergens
+Route::get('/allergens', 'AllergenController@index')->name('allergen.index');
+Route::get('/allergens/{id}', 'AllergenController@show')->name('allergen.show');
