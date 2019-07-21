@@ -32,7 +32,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
-            'allergens' => 'array',
+            'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
         ]);
 
