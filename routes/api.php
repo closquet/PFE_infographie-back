@@ -20,11 +20,15 @@ Route::post('/login', 'Auth\AuthController@login')->name('user.login');
 Route::post('/refresh-token', 'Auth\AuthController@refresh')->name('user.refresh');
 Route::post('/logout', 'Auth\AuthController@logout')->middleware('auth:api')->name('user.logout');
 
+
+
 // Forgotten password
 //TODO: replace log by email sending
 Route::post('/password/create', 'Auth\PasswordResetController@create');
 Route::get('/password/find/{token}', 'Auth\PasswordResetController@find');
 Route::post('/password/reset', 'Auth\PasswordResetController@reset');
+
+
 
 // Logged in admin routes
 Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'isadmin']], function () {
@@ -44,6 +48,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'isadmin']], fun
     Route::delete('/ingredient-categories/{id}', 'IngredientCategoryController@delete')->name('ingredientCategory.delete');
 });
 
+
+
 // Logged in routes
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/user', 'UserController@showLoggedInUser')->name('user.showLoggedInUser');
@@ -53,6 +59,8 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 
 });
+
+
 
 // Public routes
 // Users
