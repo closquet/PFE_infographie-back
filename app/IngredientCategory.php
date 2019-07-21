@@ -15,8 +15,12 @@ class IngredientCategory extends Model
         'name'
     ];
 
-//    public function ingredients()
-//    {
-//        return $this->belongsToMany('aleafoodapi\Ingredient', 'ingredient_ingredient_category');
-//    }
+    protected $with = [
+        'subCategory:id,name',
+    ];
+
+    public function subCategory()
+    {
+        return $this->hasMany('aleafoodapi\IngredientSubCat');
+    }
 }

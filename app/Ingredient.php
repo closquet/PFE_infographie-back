@@ -12,7 +12,12 @@ class Ingredient extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
+        'sub_cat_id'
+    ];
+
+    protected $with = [
+        'allergens:id,name',
     ];
 
     public function allergens()
@@ -20,10 +25,13 @@ class Ingredient extends Model
         return $this->belongsToMany('aleafoodapi\Allergen');
     }
 
-    protected $with = ['allergens:id,name'];
-
     public function disliked_by_users()
     {
         return $this->belongsToMany('aleafoodapi\User', 'user_dislikes_ingredient');
+    }
+
+    public function subCategory()
+    {
+        return $this->belongsTo('aleafoodapi\IngredientSubCat');
     }
 }

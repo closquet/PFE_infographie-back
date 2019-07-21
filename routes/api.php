@@ -46,6 +46,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'isadmin']], fun
     Route::post('/ingredient-categories', 'IngredientCategoryController@store')->name('ingredientCategory.store');
     Route::put('/ingredient-categories/{id}', 'IngredientCategoryController@update')->name('ingredientCategory.update');
     Route::delete('/ingredient-categories/{id}', 'IngredientCategoryController@delete')->name('ingredientCategory.delete');
+
+    // Ingredient-sub-categories (index & show in public routes)
+    Route::post('/ingredient-sub-categories', 'IngredientSubCatController@store')->name('ingredientSubCat.store');
+    Route::put('/ingredient-sub-categories/{id}', 'IngredientSubCatController@update')->name('ingredientSubCat.update');
+    Route::delete('/ingredient-sub-categories/{id}', 'IngredientSubCatController@delete')->name('ingredientSubCat.delete');
 });
 
 
@@ -78,3 +83,7 @@ Route::get('/ingredients/{id}', 'IngredientController@show')->name('ingredient.s
 // Ingredient-categories
 Route::get('/ingredient-categories', 'IngredientCategoryController@index')->name('ingredientCategory.index');
 Route::get('/ingredient-categories/{id}', 'IngredientCategoryController@show')->name('ingredientCategory.show');
+
+// Ingredient-sub-categories
+Route::get('/ingredient-sub-categories', 'IngredientSubCatController@index')->name('ingredientSubCat.index');
+Route::get('/ingredient-sub-categories/{id}', 'IngredientSubCatController@show')->name('ingredientSubCat.show');

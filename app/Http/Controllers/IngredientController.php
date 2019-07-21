@@ -20,10 +20,12 @@ class IngredientController extends Controller
             'name' => 'required|string|min:2|max:30|unique:ingredients',
             'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
+            'sub_cat_id' => 'required|integer|exists:ingredient_sub_cats,id',
         ]);
 
         $ingredient = new Ingredient;
         $ingredient->name = $request->name;
+        $ingredient->sub_cat_id = $request->sub_cat_id;
         $ingredient->save();
         $ingredient->allergens()->sync($request->allergens);
         $ingredient = $ingredient->fresh();
@@ -54,6 +56,7 @@ class IngredientController extends Controller
             ],
             'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
+            'sub_cat_id' => 'required|integer|exists:ingredient_sub_cats,id',
         ]);
 
         $ingredient = Ingredient::find($id);
@@ -63,6 +66,7 @@ class IngredientController extends Controller
         }
 
         $ingredient->name = $request->name;
+        $ingredient->sub_cat_id = $request->sub_cat_id;
         $ingredient->save();
         $ingredient->allergens()->sync($request->allergens);
         $ingredient = $ingredient->fresh();
