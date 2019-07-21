@@ -26,6 +26,7 @@ class UserController extends Controller
      * edit the data of logged in user
      *
      * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function editLoggedInUser (Request $request)
     {
@@ -34,11 +35,14 @@ class UserController extends Controller
             'description' => 'nullable|string|max:255',
             'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
+            'disliked_ingredients' => 'present|array',
+            'ingredients.*' => 'integer|exists:allergens,id',
         ]);
 
         $user = Auth::user();
 
             $user->allergens()->sync($request->allergens);
+            $user->disliked_ingredients()->sync($request->disliked_ingredients);
             $user->description = $request->description;
 
         if ($request->name != $user->name){

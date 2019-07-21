@@ -21,4 +21,9 @@ class Ingredient extends Model
     }
 
     protected $with = ['allergens:id,name'];
+
+    public function disliked_by_users()
+    {
+        return $this->belongsToMany('aleafoodapi\User', 'user_dislikes_ingredient');
+    }
 }

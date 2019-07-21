@@ -39,6 +39,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $with = [
+        'allergens:id,name',
+        'disliked_ingredients:id,name',
+    ];
+
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -58,5 +63,9 @@ class User extends Authenticatable
         return $this->belongsToMany('aleafoodapi\Allergen');
     }
 
-    protected $with = ['allergens:id,name'];
+
+    public function disliked_ingredients()
+    {
+        return $this->belongsToMany('aleafoodapi\Ingredient', 'user_dislikes_ingredient');
+    }
 }
