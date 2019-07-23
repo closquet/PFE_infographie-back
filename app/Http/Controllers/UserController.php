@@ -36,7 +36,7 @@ class UserController extends Controller
             'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
             'disliked_ingredients' => 'present|array',
-            'ingredients.*' => 'integer|exists:allergens,id',
+            'disliked_ingredients.*' => 'integer|exists:ingredients,id',
         ]);
 
         $user = Auth::user();
