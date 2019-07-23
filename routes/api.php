@@ -41,6 +41,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'isadmin']], fun
     Route::post('/ingredients', 'IngredientController@store')->name('ingredient.store');
     Route::put('/ingredients/{id}', 'IngredientController@update')->name('ingredient.update');
     Route::delete('/ingredients/{id}', 'IngredientController@delete')->name('ingredient.delete');
+    Route::post('/ingredients/{id}/thumbnail', 'IngredientController@updateThumbnail')->name('ingredient.update_thumbnail');
 
     // Ingredient-categories (index & show in public routes)
     Route::post('/ingredient-categories', 'IngredientCategoryController@store')->name('ingredientCategory.store');

@@ -4,7 +4,9 @@ namespace aleafoodapi\Http\Controllers;
 
 use Illuminate\Http\Request;
 use aleafoodapi\Ingredient;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Intervention\Image\Facades\Image;
 
 class IngredientController extends Controller
 {
@@ -83,5 +85,49 @@ class IngredientController extends Controller
         }
 
         return $ingredient;
+    }
+
+
+    /**
+     * add or change the thumbnail
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateThumbnail(Request $request, $id)
+    {
+        $request->validate([
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $ingredient = Ingredient::find($id);
+
+        if (!$ingredient) {
+            return response()->json(['error' => 'Ingredient not found'], 404);
+        }
+
+        if ($ingredient->thumbnail) {
+            Storage::delete($ingredient->thumbnail);
+            $ingredient->thumbnail = null;
+        }
+
+        $thumbnailName = $ingredient->name.'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+
+        $path = $request->thumbnail->storeAs('thumbnails',$thumbnailName);
+
+        $resizedImg = Image::make(Storage::get($path));
+
+        $resizedImg->fit(400, 400, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+
+        $resizedImg->save('storage/' . $path);
+
+        $ingredient->thumbnail = $path;
+        $ingredient->save();
+
+        return response()->json($ingredient)->setStatusCode(200);
+
     }
 }

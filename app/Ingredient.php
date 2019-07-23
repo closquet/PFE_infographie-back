@@ -13,7 +13,8 @@ class Ingredient extends Model
      */
     protected $fillable = [
         'name',
-        'sub_cat_id'
+        'sub_cat_id',
+        'thumbnail',
     ];
 
     protected $with = [
