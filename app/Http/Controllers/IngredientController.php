@@ -113,21 +113,22 @@ class IngredientController extends Controller
 
         $thumbnailName = $ingredient->name.'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
 
-        $path = $request->thumbnail->storeAs('thumbnails',$thumbnailName);
+        $thumbnailsPath = $request->thumbnail->storeAs('thumbnails',$thumbnailName);
 
-        $resizedImg = Image::make(Storage::get($path));
+        $thumbnail = Image::make(Storage::get($thumbnailsPath));
 
-        $resizedImg->fit(400, 400, function ($constraint) {
+        $thumbnail->fit(400, 400, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
 
-        $resizedImg->save('storage/' . $path);
 
-        $ingredient->thumbnail = $path;
+
+        $thumbnail->save('storage/' . $thumbnailsPath);
+
+        $ingredient->thumbnail = $thumbnailsPath;
         $ingredient->save();
 
         return response()->json($ingredient)->setStatusCode(200);
-
     }
 }

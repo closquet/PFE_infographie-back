@@ -16,6 +16,7 @@ class CreateIngredientCategoriesTable extends Migration
         Schema::create('ingredient_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
     }

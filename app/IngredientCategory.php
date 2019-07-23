@@ -21,6 +21,6 @@ class IngredientCategory extends Model
 
     public function subCategory()
     {
-        return $this->hasMany('aleafoodapi\IngredientSubCat');
+        return $this->hasMany('aleafoodapi\IngredientSubCat', 'cat_id');
     }
 }
