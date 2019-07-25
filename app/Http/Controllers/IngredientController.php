@@ -5,6 +5,7 @@ namespace aleafoodapi\Http\Controllers;
 use Illuminate\Http\Request;
 use aleafoodapi\Ingredient;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
 
@@ -111,7 +112,7 @@ class IngredientController extends Controller
             $ingredient->thumbnail = null;
         }
 
-        $thumbnailName = $ingredient->name.'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $thumbnailName = Str::slug($ingredient->name).'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
 
         $thumbnailsPath = $request->thumbnail->storeAs('thumbnails',$thumbnailName);
 
@@ -121,8 +122,6 @@ class IngredientController extends Controller
             $constraint->aspectRatio();
             $constraint->upsize();
         });
-
-
 
         $thumbnail->save('storage/' . $thumbnailsPath);
 

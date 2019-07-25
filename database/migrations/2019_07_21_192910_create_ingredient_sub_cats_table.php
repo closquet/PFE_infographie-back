@@ -17,6 +17,7 @@ class CreateIngredientSubCatsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->bigInteger('cat_id')->unsigned()->index();
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
             $table->foreign('cat_id')->references('id')->on('ingredient_categories')->onDelete('set null');
         });

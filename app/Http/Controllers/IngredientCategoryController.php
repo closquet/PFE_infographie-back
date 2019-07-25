@@ -5,6 +5,7 @@ namespace aleafoodapi\Http\Controllers;
 use aleafoodapi\IngredientCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
 
@@ -101,9 +102,9 @@ class IngredientCategoryController extends Controller
             $category->thumbnail = null;
         }
 
-        $thumbnailName = $category->name.'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
-        $bannerName = $category->name.'_banner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
-        $bannerLargeName = $category->name.'_largeBanner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $thumbnailName = Str::slug($category->name).'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $bannerName = Str::slug($category->name).'_banner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $bannerLargeName = Str::slug($category->name).'_largeBanner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
 
         $thumbnailPath = $request->thumbnail->storeAs('thumbnails',$thumbnailName);
         $bannerPath = $request->thumbnail->storeAs('banners',$bannerName);

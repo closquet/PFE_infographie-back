@@ -53,6 +53,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'isadmin']], fun
     Route::post('/ingredient-sub-categories', 'IngredientSubCatController@store')->name('ingredientSubCat.store');
     Route::put('/ingredient-sub-categories/{id}', 'IngredientSubCatController@update')->name('ingredientSubCat.update');
     Route::delete('/ingredient-sub-categories/{id}', 'IngredientSubCatController@delete')->name('ingredientSubCat.delete');
+    Route::post('/ingredient-sub-categories/{id}/thumbnail', 'IngredientSubCatController@updateThumbnail')->name('ingredientSubCat.update_thumbnail');
 });
 
 

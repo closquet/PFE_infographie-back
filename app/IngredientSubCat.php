@@ -13,7 +13,8 @@ class IngredientSubCat extends Model
      */
     protected $fillable = [
         'name',
-        'cat_id'
+        'cat_id',
+        'thumbnail',
     ];
 
     public function ingredients()
