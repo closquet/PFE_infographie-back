@@ -19,6 +19,7 @@ class Ingredient extends Model
 
     protected $with = [
         'allergens:id,name',
+        'seasons:id,name',
     ];
 
     public function allergens()
@@ -34,5 +35,10 @@ class Ingredient extends Model
     public function subCategory()
     {
         return $this->belongsTo('aleafoodapi\IngredientSubCat');
+    }
+
+    public function seasons()
+    {
+        return $this->belongsToMany('aleafoodapi\Season');
     }
 }

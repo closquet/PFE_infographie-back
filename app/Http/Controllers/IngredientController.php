@@ -23,6 +23,8 @@ class IngredientController extends Controller
             'name' => 'required|string|min:2|max:30|unique:ingredients',
             'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
+            'seasons' => 'present|array',
+            'seasons.*' => 'integer|exists:seasons,id',
             'sub_cat_id' => 'required|integer|exists:ingredient_sub_cats,id',
         ]);
 
@@ -31,6 +33,7 @@ class IngredientController extends Controller
         $ingredient->sub_cat_id = $request->sub_cat_id;
         $ingredient->save();
         $ingredient->allergens()->sync($request->allergens);
+        $ingredient->seasons()->sync($request->seasons);
         $ingredient = $ingredient->fresh();
 
         return $ingredient;
@@ -59,6 +62,8 @@ class IngredientController extends Controller
             ],
             'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
+            'seasons' => 'present|array',
+            'seasons.*' => 'integer|exists:seasons,id',
             'sub_cat_id' => 'required|integer|exists:ingredient_sub_cats,id',
         ]);
 
@@ -72,6 +77,7 @@ class IngredientController extends Controller
         $ingredient->sub_cat_id = $request->sub_cat_id;
         $ingredient->save();
         $ingredient->allergens()->sync($request->allergens);
+        $ingredient->seasons()->sync($request->seasons);
         $ingredient = $ingredient->fresh();
 
         return $ingredient;

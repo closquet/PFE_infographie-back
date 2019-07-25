@@ -55,6 +55,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'isadmin']], fun
     Route::put('/ingredient-sub-categories/{id}', 'IngredientSubCatController@update')->name('ingredientSubCat.update');
     Route::delete('/ingredient-sub-categories/{id}', 'IngredientSubCatController@delete')->name('ingredientSubCat.delete');
     Route::post('/ingredient-sub-categories/{id}/thumbnail', 'IngredientSubCatController@updateThumbnail')->name('ingredientSubCat.update_thumbnail');
+
+    // Seasons (index & show in public routes)
+    Route::post('/seasons', 'SeasonController@store')->name('season.store');
+    Route::put('/seasons/{id}', 'SeasonController@update')->name('season.update');
+    Route::delete('/seasons/{id}', 'SeasonController@delete')->name('season.delete');
 });
 
 
@@ -91,3 +96,7 @@ Route::get('/ingredient-categories/{id}', 'IngredientCategoryController@show')->
 // Ingredient-sub-categories
 Route::get('/ingredient-sub-categories', 'IngredientSubCatController@index')->name('ingredientSubCat.index');
 Route::get('/ingredient-sub-categories/{id}', 'IngredientSubCatController@show')->name('ingredientSubCat.show');
+
+// Seasons
+Route::get('/seasons', 'SeasonController@index')->name('season.index');
+Route::get('/seasons/{id}', 'SeasonController@show')->name('season.show');
