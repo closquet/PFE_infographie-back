@@ -12,7 +12,8 @@ class Allergen extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
+        'thumbnail',
     ];
 
     protected $hidden = array('pivot');

@@ -36,6 +36,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'isadmin']], fun
     Route::post('/allergens', 'AllergenController@store')->name('allergen.store');
     Route::put('/allergens/{id}', 'AllergenController@update')->name('allergen.update');
     Route::delete('/allergens/{id}', 'AllergenController@delete')->name('allergen.delete');
+    Route::post('/allergens/{id}/thumbnail', 'AllergenController@updateThumbnail')->name('allergen.update_thumbnail');
 
     // Ingredients (index & show in public routes)
     Route::post('/ingredients', 'IngredientController@store')->name('ingredient.store');
