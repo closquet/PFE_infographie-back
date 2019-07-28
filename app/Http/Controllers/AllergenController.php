@@ -39,6 +39,11 @@ class AllergenController extends Controller
             return response()->json(['error' => 'Allergen not found'], 404);
         }
 
+        if ($allergen->thumbnail) {
+            Storage::delete($allergen->thumbnail);
+            $allergen->thumbnail = null;
+        }
+
         $allergen->delete();
 
         return response()->json(['message' => 'Allergen deleted']);

@@ -39,6 +39,13 @@ class IngredientCategoryController extends Controller
             return response()->json(['error' => 'Ingredient category not found'], 404);
         }
 
+        if ($category->thumbnail) {
+            Storage::delete($category->thumbnail);
+            Storage::delete(str_replace("thumbnail", "banner", $category->thumbnail));
+            Storage::delete(str_replace("thumbnail", "largeBanner", $category->thumbnail));
+            $category->thumbnail = null;
+        }
+
         $category->delete();
 
         return response()->json(['message' => 'Ingredient category deleted']);

@@ -18,7 +18,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar', 'description',
+        'name',
+        'email',
+        'password',
+        'avatar',
+        'description',
+        'allergens',
     ];
 
     /**
@@ -42,6 +47,7 @@ class User extends Authenticatable
     protected $with = [
         'allergens:id,name',
         'disliked_ingredients:id,name',
+        'recipes:id,name,slug',
     ];
 
     /**
@@ -67,5 +73,10 @@ class User extends Authenticatable
     public function disliked_ingredients()
     {
         return $this->belongsToMany('aleafoodapi\Ingredient', 'user_dislikes_ingredient');
+    }
+
+    public function recipes()
+    {
+        return $this->hasMany('aleafoodapi\Recipe');
     }
 }

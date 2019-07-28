@@ -15,7 +15,10 @@ class Ingredient extends Model
         'name',
         'sub_cat_id',
         'thumbnail',
+        'allergens',
     ];
+
+    protected $hidden = array('pivot');
 
     protected $with = [
         'allergens:id,name',
@@ -40,5 +43,10 @@ class Ingredient extends Model
     public function seasons()
     {
         return $this->belongsToMany('aleafoodapi\Season');
+    }
+
+    public function recipes()
+    {
+        return $this->belongsToMany('aleafoodapi\Recipe');
     }
 }

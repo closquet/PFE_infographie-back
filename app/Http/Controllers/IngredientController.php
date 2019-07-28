@@ -48,6 +48,11 @@ class IngredientController extends Controller
             return response()->json(['error' => 'Ingredient not found'], 404);
         }
 
+        if ($ingredient->thumbnail) {
+            Storage::delete($ingredient->thumbnail);
+            $ingredient->thumbnail = null;
+        }
+
         $ingredient->delete();
 
         return response()->json(['message' => 'Ingredient deleted']);

@@ -41,6 +41,13 @@ class IngredientSubCatController extends Controller
             return response()->json(['error' => 'Ingredient sub category not found'], 404);
         }
 
+        if ($ingredientSubCategories->thumbnail) {
+            Storage::delete($ingredientSubCategories->thumbnail);
+            Storage::delete(str_replace("thumbnail", "banner", $ingredientSubCategories->thumbnail));
+            Storage::delete(str_replace("thumbnail", "largeBanner", $ingredientSubCategories->thumbnail));
+            $ingredientSubCategories->thumbnail = null;
+        }
+
         $ingredientSubCategories->delete();
 
         return response()->json(['message' => 'Ingredient sub category deleted']);
@@ -56,28 +63,28 @@ class IngredientSubCatController extends Controller
             'cat_id' => 'required|integer|exists:ingredient_categories,id',
         ]);
 
-        $ingredientSubCategories = IngredientSubCat::find($id);
+        $ingredientSubCategory = IngredientSubCat::find($id);
 
-        if (!$ingredientSubCategories) {
+        if (!$ingredientSubCategory) {
             return response()->json(['error' => 'Ingredient sub category not found'], 404);
         }
 
-        $ingredientSubCategories->name = $request->name;
-        $ingredientSubCategories->cat_id = $request->cat_id;
-        $ingredientSubCategories->save();
+        $ingredientSubCategory->name = $request->name;
+        $ingredientSubCategory->cat_id = $request->cat_id;
+        $ingredientSubCategory->save();
 
-        return $ingredientSubCategories;
+        return $ingredientSubCategory;
     }
 
     public function show($id)
     {
-        $ingredientSubCategories = IngredientSubCat::find($id);
+        $ingredientSubCategory = IngredientSubCat::find($id);
 
-        if (!$ingredientSubCategories) {
+        if (!$ingredientSubCategory) {
             return response()->json(['error' => 'Ingredient sub category not found'], 404);
         }
 
-        return $ingredientSubCategories;
+        return $ingredientSubCategory;
     }
 
 
