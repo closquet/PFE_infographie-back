@@ -3,6 +3,7 @@
 namespace Aleafoodapi\Http\Controllers;
 
 use Aleafoodapi\Recipe;
+use Aleafoodapi\Step;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -29,20 +30,33 @@ class RecipeController extends Controller
             'ingredients.*' => 'required|integer|exists:ingredients,id',
             'tags' => 'present|array',
             'tags.*' => 'integer|exists:tags,id',
+            'steps' => 'required|array',
+            'steps.*' => 'required|string',
         ]);
+
+        $recipe = new Recipe;
 
         $user = Auth::user();
 
-        $recipe = new Recipe;
         $recipe->name = $request->name;
         $recipe->description = $request->description;
         $recipe->preparation_time = $request->preparation_time;
         $recipe->cooking_time = $request->cooking_time;
         $recipe->user_id = $user->id;
         $recipe->save();
+
+        foreach ($request->steps as $key => $value){
+            $recipe->steps()->create([
+                'step_number'=> $key + 1,
+                'content'=> $value,
+            ]);
+        }
+
         $recipe->ingredients()->sync($request->ingredients);
         $recipe->tags()->sync($request->tags);
         $recipe = $recipe->fresh();
+
+        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user', 'steps');
 
         return $recipe;
     }
@@ -88,7 +102,17 @@ class RecipeController extends Controller
             'ingredients.*' => 'required|integer|exists:ingredients,id',
             'tags' => 'present|array',
             'tags.*' => 'integer|exists:tags,id',
+            'steps' => 'required|array',
+            'steps.*' => 'required|string',
         ]);
+
+        $recipe->steps()->delete();
+        foreach ($request->steps as $key => $value){
+            $recipe->steps()->create([
+                'step_number'=> $key + 1,
+                'content'=> $value,
+            ]);
+        }
 
         $recipe->description = $request->description;
         $recipe->preparation_time = $request->preparation_time;
@@ -105,13 +129,15 @@ class RecipeController extends Controller
         $recipe->tags()->sync($request->tags);
 
         $recipe = $recipe->fresh();
+        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user', 'steps');
 
         return $recipe;
     }
 
     public function show($slug)
     {
-        $recipes = Recipe::with(['user'])->where('slug',$slug)->first();
+        $recipes = Recipe::where('slug',$slug)->first();
+        $recipes->load('ingredients', 'ingredients.allergens:name,slug', 'user', 'steps');
 
         if (!$recipes) {
             return response()->json(['error' => 'Recipe not found'], 404);

@@ -63,4 +63,9 @@ class Recipe extends Model
     {
         return $this->belongsToMany('Aleafoodapi\User', 'user_like_recipe');
     }
+
+    public function steps()
+    {
+        return $this->hasMany('Aleafoodapi\Step');
+    }
 }
