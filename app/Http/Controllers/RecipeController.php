@@ -44,10 +44,10 @@ class RecipeController extends Controller
         return $recipe;
     }
 
-    public function delete($id)
+    public function delete($slug)
     {
 
-        $recipe = Recipe::find($id);
+        $recipe = Recipe::where('slug',$slug)->first();
 
         if (!$recipe) {
             return response()->json(['error' => 'Recipe not found'], 404);
@@ -65,12 +65,18 @@ class RecipeController extends Controller
         return response()->json(['message' => 'Recipe deleted']);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
+        $recipe = Recipe::where('slug',$slug)->first();
+
+        if (!$recipe) {
+            return response()->json(['error' => 'Recipe not found'], 404);
+        }
+
         $request->validate([
             'name' => [
                 'required','string','min:2','max:30',
-                Rule::unique('recipes')->ignore($id),
+                Rule::unique('recipes')->ignore($recipe->id),
             ],
             'description' => 'nullable|string|max:255',
             'preparation_time' => 'required|integer|max:5000',
@@ -78,12 +84,6 @@ class RecipeController extends Controller
             'ingredients' => 'required|array',
             'ingredients.*' => 'required|integer|exists:ingredients,id',
         ]);
-
-        $recipe = Recipe::find($id);
-
-        if (!$recipe) {
-            return response()->json(['error' => 'Recipe not found'], 404);
-        }
 
         $recipe->description = $request->description;
         $recipe->preparation_time = $request->preparation_time;
@@ -104,9 +104,9 @@ class RecipeController extends Controller
         return $recipe;
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $recipes = Recipe::find($id);
+        $recipes = Recipe::where('slug',$slug)->first();
 
         if (!$recipes) {
             return response()->json(['error' => 'Recipe not found'], 404);
@@ -122,13 +122,13 @@ class RecipeController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateThumbnail(Request $request, $id)
+    public function updateThumbnail(Request $request, $slug)
     {
         $request->validate([
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $recipe = Recipe::find($id);
+        $recipe = Recipe::where('slug',$slug)->first();
 
         if (!$recipe) {
             return response()->json(['error' => 'Recipe not found'], 404);

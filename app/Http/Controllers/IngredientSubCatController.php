@@ -32,10 +32,10 @@ class IngredientSubCatController extends Controller
         return $ingredientSubCategories;
     }
 
-    public function delete($id)
+    public function delete($slug)
     {
 
-        $ingredientSubCategories = IngredientSubCat::find($id);
+        $ingredientSubCategories = IngredientSubCat::where('slug',$slug)->first();
 
         if (!$ingredientSubCategories) {
             return response()->json(['error' => 'Ingredient sub category not found'], 404);
@@ -53,21 +53,21 @@ class IngredientSubCatController extends Controller
         return response()->json(['message' => 'Ingredient sub category deleted']);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $request->validate([
-            'name' => [
-                'required','string','min:2','max:30',
-                Rule::unique('ingredient_sub_cats')->ignore($id),
-            ],
-            'cat_id' => 'required|integer|exists:ingredient_categories,id',
-        ]);
-
-        $ingredientSubCategory = IngredientSubCat::find($id);
+        $ingredientSubCategory = IngredientSubCat::where('slug',$slug)->first();
 
         if (!$ingredientSubCategory) {
             return response()->json(['error' => 'Ingredient sub category not found'], 404);
         }
+
+        $request->validate([
+            'name' => [
+                'required','string','min:2','max:30',
+                Rule::unique('ingredient_sub_cats')->ignore($ingredientSubCategory->id),
+            ],
+            'cat_id' => 'required|integer|exists:ingredient_categories,id',
+        ]);
 
         $ingredientSubCategory->cat_id = $request->cat_id;
 
@@ -83,9 +83,9 @@ class IngredientSubCatController extends Controller
         return $ingredientSubCategory;
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $ingredientSubCategory = IngredientSubCat::find($id);
+        $ingredientSubCategory = IngredientSubCat::where('slug',$slug)->first();
 
         if (!$ingredientSubCategory) {
             return response()->json(['error' => 'Ingredient sub category not found'], 404);
@@ -101,13 +101,13 @@ class IngredientSubCatController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateThumbnail(Request $request, $id)
+    public function updateThumbnail(Request $request, $slug)
     {
         $request->validate([
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $ingredientSubCategories = IngredientSubCat::find($id);
+        $ingredientSubCategories = IngredientSubCat::where('slug',$slug)->first();
 
         if (!$ingredientSubCategories) {
             return response()->json(['error' => 'Ingredient sub category not found'], 404);

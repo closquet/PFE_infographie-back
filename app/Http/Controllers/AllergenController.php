@@ -30,10 +30,10 @@ class AllergenController extends Controller
         return $allergen;
     }
 
-    public function delete($id)
+    public function delete($slug)
     {
 
-        $allergen = Allergen::find($id);
+        $allergen = Allergen::where('slug',$slug)->first();
 
         if (!$allergen) {
             return response()->json(['error' => 'Allergen not found'], 404);
@@ -49,20 +49,20 @@ class AllergenController extends Controller
         return response()->json(['message' => 'Allergen deleted']);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $request->validate([
-            'name' => [
-                'required','string','min:2','max:30',
-                Rule::unique('allergens')->ignore($id),
-            ],
-        ]);
-
-        $allergen = Allergen::find($id);
+        $allergen = Allergen::where('slug',$slug)->first();
 
         if (!$allergen) {
             return response()->json(['error' => 'Allergen not found'], 404);
         }
+
+        $request->validate([
+            'name' => [
+                'required','string','min:2','max:30',
+                Rule::unique('allergens')->ignore($allergen->id),
+            ],
+        ]);
 
         if ($request->name != $allergen->name){
             $allergen->slug = null;
@@ -76,9 +76,9 @@ class AllergenController extends Controller
         return $allergen;
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $allergen = Allergen::find($id);
+        $allergen = Allergen::where('slug',$slug)->first();
 
         if (!$allergen) {
             return response()->json(['error' => 'Allergen not found'], 404);
@@ -94,13 +94,13 @@ class AllergenController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateThumbnail(Request $request, $id)
+    public function updateThumbnail(Request $request, $slug)
     {
         $request->validate([
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $allergen = Allergen::find($id);
+        $allergen = Allergen::where('slug',$slug)->first();
 
         if (!$allergen) {
             return response()->json(['error' => 'Allergen not found'], 404);

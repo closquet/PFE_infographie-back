@@ -27,10 +27,10 @@ class SeasonController extends Controller
         return $season;
     }
 
-    public function delete($id)
+    public function delete($slug)
     {
 
-        $season = Season::find($id);
+        $season = Season::where('slug',$slug)->first();
 
         if (!$season) {
             return response()->json(['error' => 'Season not found'], 404);
@@ -41,20 +41,20 @@ class SeasonController extends Controller
         return response()->json(['message' => 'Season deleted']);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $request->validate([
-            'name' => [
-                'required','string','min:2','max:30',
-                Rule::unique('seasons')->ignore($id),
-            ],
-        ]);
-
-        $season = Season::find($id);
+        $season = Season::where('slug',$slug)->first();
 
         if (!$season) {
             return response()->json(['error' => 'Season not found'], 404);
         }
+
+        $request->validate([
+            'name' => [
+                'required','string','min:2','max:30',
+                Rule::unique('seasons')->ignore($season->id),
+            ],
+        ]);
 
         if ($request->name != $season->name){
             $season->slug = null;
@@ -68,9 +68,9 @@ class SeasonController extends Controller
         return $season;
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $season = Season::find($id);
+        $season = Season::where('slug',$slug)->first();
 
         if (!$season) {
             return response()->json(['error' => 'Season not found'], 404);

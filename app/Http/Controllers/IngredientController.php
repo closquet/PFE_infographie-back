@@ -39,10 +39,10 @@ class IngredientController extends Controller
         return $ingredient;
     }
 
-    public function delete($id)
+    public function delete($slug)
     {
 
-        $ingredient = Ingredient::find($id);
+        $ingredient = Ingredient::where('slug',$slug)->first();
 
         if (!$ingredient) {
             return response()->json(['error' => 'Ingredient not found'], 404);
@@ -58,12 +58,18 @@ class IngredientController extends Controller
         return response()->json(['message' => 'Ingredient deleted']);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
+        $ingredient = Ingredient::where('slug',$slug)->first();
+
+        if (!$ingredient) {
+            return response()->json(['error' => 'Ingredient not found'], 404);
+        }
+
         $request->validate([
             'name' => [
                 'required','string','min:2','max:30',
-                Rule::unique('ingredients')->ignore($id),
+                Rule::unique('ingredients')->ignore($ingredient->id),
             ],
             'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
@@ -71,12 +77,6 @@ class IngredientController extends Controller
             'seasons.*' => 'integer|exists:seasons,id',
             'sub_cat_id' => 'required|integer|exists:ingredient_sub_cats,id',
         ]);
-
-        $ingredient = Ingredient::find($id);
-
-        if (!$ingredient) {
-            return response()->json(['error' => 'Ingredient not found'], 404);
-        }
 
         $ingredient->sub_cat_id = $request->sub_cat_id;
         $ingredient->save();
@@ -97,9 +97,9 @@ class IngredientController extends Controller
         return $ingredient;
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $ingredient = Ingredient::find($id);
+        $ingredient = Ingredient::where('slug',$slug)->first();
 
         if (!$ingredient) {
             return response()->json(['error' => 'Ingredient not found'], 404);
@@ -115,13 +115,13 @@ class IngredientController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateThumbnail(Request $request, $id)
+    public function updateThumbnail(Request $request, $slug)
     {
         $request->validate([
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $ingredient = Ingredient::find($id);
+        $ingredient = Ingredient::where('slug',$slug)->first();
 
         if (!$ingredient) {
             return response()->json(['error' => 'Ingredient not found'], 404);

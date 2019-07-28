@@ -30,10 +30,10 @@ class IngredientCategoryController extends Controller
         return $category;
     }
 
-    public function delete($id)
+    public function delete($slug)
     {
 
-        $category = IngredientCategory::find($id);
+        $category = IngredientCategory::where('slug',$slug)->first();
 
         if (!$category) {
             return response()->json(['error' => 'Ingredient category not found'], 404);
@@ -51,20 +51,20 @@ class IngredientCategoryController extends Controller
         return response()->json(['message' => 'Ingredient category deleted']);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $request->validate([
-            'name' => [
-                'required','string','min:2','max:30',
-                Rule::unique('ingredient_categories')->ignore($id),
-            ],
-        ]);
-
-        $category = IngredientCategory::find($id);
+        $category = IngredientCategory::where('slug',$slug)->first();
 
         if (!$category) {
             return response()->json(['error' => 'Ingredient category not found'], 404);
         }
+
+        $request->validate([
+            'name' => [
+                'required','string','min:2','max:30',
+                Rule::unique('ingredient_categories')->ignore($category->id),
+            ],
+        ]);
 
         if ($request->name != $category->name){
             $category->slug = null;
@@ -78,9 +78,9 @@ class IngredientCategoryController extends Controller
         return $category;
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $category = IngredientCategory::find($id);
+        $category = IngredientCategory::where('slug',$slug)->first();
 
         if (!$category) {
             return response()->json(['error' => 'Ingredient category not found'], 404);
@@ -96,13 +96,13 @@ class IngredientCategoryController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateThumbnail(Request $request, $id)
+    public function updateThumbnail(Request $request, $slug)
     {
         $request->validate([
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $category = IngredientCategory::find($id);
+        $category = IngredientCategory::where('slug',$slug)->first();
 
         if (!$category) {
             return response()->json(['error' => 'Ingredient category not found'], 404);
