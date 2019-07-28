@@ -15,8 +15,8 @@ class CreateIngredientsTable extends Migration
     {
         Schema::create('ingredients', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name')->unique();
             $table->string('slug')->unique();
-            $table->string('name');
             $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
