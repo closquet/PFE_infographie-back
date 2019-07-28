@@ -56,8 +56,14 @@ class SeasonController extends Controller
             return response()->json(['error' => 'Season not found'], 404);
         }
 
-        $season->name = $request->name;
-        $season->save();
+        if ($request->name != $season->name){
+            $season->slug = null;
+            $season->update([
+                'name' => $request->name,
+            ]);
+        }else {
+            $season->save();
+        }
 
         return $season;
     }

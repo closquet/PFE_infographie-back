@@ -69,9 +69,16 @@ class IngredientSubCatController extends Controller
             return response()->json(['error' => 'Ingredient sub category not found'], 404);
         }
 
-        $ingredientSubCategory->name = $request->name;
         $ingredientSubCategory->cat_id = $request->cat_id;
-        $ingredientSubCategory->save();
+
+        if ($request->name != $ingredientSubCategory->name){
+            $ingredientSubCategory->slug = null;
+            $ingredientSubCategory->update([
+                'name' => $request->name,
+            ]);
+        }else {
+            $ingredientSubCategory->save();
+        }
 
         return $ingredientSubCategory;
     }
@@ -112,9 +119,9 @@ class IngredientSubCatController extends Controller
             Storage::delete(str_replace("thumbnail", "largeBanner", $ingredientSubCategories->thumbnail));
             $ingredientSubCategories->thumbnail = null;
         }
-        $thumbnailName = Str::slug($ingredientSubCategories->name).'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
-        $bannerName = Str::slug($ingredientSubCategories->name).'_banner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
-        $bannerLargeName = Str::slug($ingredientSubCategories->name).'_largeBanner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $thumbnailName = $ingredientSubCategories->slug.'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $bannerName = $ingredientSubCategories->slug.'_banner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $bannerLargeName = $ingredientSubCategories->slug.'_largeBanner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
 
         $thumbnailPath = $request->thumbnail->storeAs('thumbnails',$thumbnailName);
         $bannerPath = $request->thumbnail->storeAs('banners',$bannerName);

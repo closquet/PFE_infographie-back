@@ -2,10 +2,22 @@
 
 namespace aleafoodapi;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Season extends Model
 {
+    use Sluggable;
+
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
+
     /**
      * The attributes that are mass assignable.
      *

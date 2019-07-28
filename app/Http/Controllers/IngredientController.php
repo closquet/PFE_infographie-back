@@ -78,11 +78,20 @@ class IngredientController extends Controller
             return response()->json(['error' => 'Ingredient not found'], 404);
         }
 
-        $ingredient->name = $request->name;
         $ingredient->sub_cat_id = $request->sub_cat_id;
         $ingredient->save();
         $ingredient->allergens()->sync($request->allergens);
         $ingredient->seasons()->sync($request->seasons);
+
+        if ($request->name != $ingredient->name){
+            $ingredient->slug = null;
+            $ingredient->update([
+                'name' => $request->name,
+            ]);
+        }else {
+            $ingredient->save();
+        }
+
         $ingredient = $ingredient->fresh();
 
         return $ingredient;
@@ -123,7 +132,7 @@ class IngredientController extends Controller
             $ingredient->thumbnail = null;
         }
 
-        $thumbnailName = Str::slug($ingredient->name).'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $thumbnailName = $ingredient->slug.'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
 
         $thumbnailsPath = $request->thumbnail->storeAs('thumbnails',$thumbnailName);
 

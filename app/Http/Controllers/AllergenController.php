@@ -64,8 +64,14 @@ class AllergenController extends Controller
             return response()->json(['error' => 'Allergen not found'], 404);
         }
 
-        $allergen->name = $request->name;
-        $allergen->save();
+        if ($request->name != $allergen->name){
+            $allergen->slug = null;
+            $allergen->update([
+                'name' => $request->name,
+            ]);
+        }else {
+            $allergen->save();
+        }
 
         return $allergen;
     }
@@ -105,7 +111,7 @@ class AllergenController extends Controller
             $allergen->thumbnail = null;
         }
 
-        $thumbnailName = Str::slug($allergen->name).'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $thumbnailName = $allergen->slug.'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
 
         $thumbnailsPath = $request->thumbnail->storeAs('thumbnails',$thumbnailName);
 

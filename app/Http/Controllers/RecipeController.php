@@ -140,9 +140,9 @@ class RecipeController extends Controller
             Storage::delete(str_replace("thumbnail", "largeBanner", $recipe->thumbnail));
             $recipe->thumbnail = null;
         }
-        $thumbnailName = Str::slug($recipe->name).'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
-        $bannerName = Str::slug($recipe->name).'_banner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
-        $bannerLargeName = Str::slug($recipe->name).'_largeBanner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $thumbnailName = $recipe->slug.'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $bannerName = $recipe->slug.'_banner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $bannerLargeName = $recipe->slug.'_largeBanner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
 
         $thumbnailPath = $request->thumbnail->storeAs('thumbnails',$thumbnailName);
         $bannerPath = $request->thumbnail->storeAs('banners',$bannerName);

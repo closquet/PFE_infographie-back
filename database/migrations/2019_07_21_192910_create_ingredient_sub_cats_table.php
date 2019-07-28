@@ -16,6 +16,7 @@ class CreateIngredientSubCatsTable extends Migration
         Schema::create('ingredient_sub_cats', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('slug')->unique();
             $table->bigInteger('cat_id')->unsigned()->index();
             $table->string('thumbnail')->nullable();
             $table->timestamps();

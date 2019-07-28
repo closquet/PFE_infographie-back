@@ -66,8 +66,14 @@ class IngredientCategoryController extends Controller
             return response()->json(['error' => 'Ingredient category not found'], 404);
         }
 
-        $category->name = $request->name;
-        $category->save();
+        if ($request->name != $category->name){
+            $category->slug = null;
+            $category->update([
+                'name' => $request->name,
+            ]);
+        }else {
+            $category->save();
+        }
 
         return $category;
     }
@@ -109,9 +115,9 @@ class IngredientCategoryController extends Controller
             $category->thumbnail = null;
         }
 
-        $thumbnailName = Str::slug($category->name).'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
-        $bannerName = Str::slug($category->name).'_banner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
-        $bannerLargeName = Str::slug($category->name).'_largeBanner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $thumbnailName = $category->slug.'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $bannerName = $category->slug.'_banner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
+        $bannerLargeName = $category->slug.'_largeBanner'.time().'.'.request()->thumbnail->getClientOriginalExtension();
 
         $thumbnailPath = $request->thumbnail->storeAs('thumbnails',$thumbnailName);
         $bannerPath = $request->thumbnail->storeAs('banners',$bannerName);
