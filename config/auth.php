@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => aleafoodapi\User::class,
+            'model' => Aleafoodapi\User::class,
         ],
 
         // 'users' => [

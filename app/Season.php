@@ -1,6 +1,6 @@
 <?php
 
-namespace aleafoodapi;
+namespace Aleafoodapi;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +31,6 @@ class Season extends Model
 
     public function ingredients()
     {
-        return $this->belongsToMany('aleafoodapi\Ingredients');
+        return $this->belongsToMany('Aleafoodapi\Ingredients');
     }
 }

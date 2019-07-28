@@ -1,6 +1,6 @@
 <?php
 
-namespace aleafoodapi;
+namespace Aleafoodapi;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
@@ -34,6 +34,6 @@ class IngredientCategory extends Model
 
     public function subCategory()
     {
-        return $this->hasMany('aleafoodapi\IngredientSubCat', 'cat_id');
+        return $this->hasMany('Aleafoodapi\IngredientSubCat', 'cat_id');
     }
 }

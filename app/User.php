@@ -1,6 +1,6 @@
 <?php
 
-namespace aleafoodapi;
+namespace Aleafoodapi;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Notifications\Notifiable;
@@ -66,17 +66,17 @@ class User extends Authenticatable
 
     public function allergens()
     {
-        return $this->belongsToMany('aleafoodapi\Allergen');
+        return $this->belongsToMany('Aleafoodapi\Allergen');
     }
 
 
     public function disliked_ingredients()
     {
-        return $this->belongsToMany('aleafoodapi\Ingredient', 'user_dislikes_ingredient');
+        return $this->belongsToMany('Aleafoodapi\Ingredient', 'user_dislikes_ingredient');
     }
 
     public function recipes()
     {
-        return $this->hasMany('aleafoodapi\Recipe');
+        return $this->hasMany('Aleafoodapi\Recipe');
     }
 }

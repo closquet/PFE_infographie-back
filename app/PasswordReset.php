@@ -1,6 +1,6 @@
 <?php
 
-namespace aleafoodapi;
+namespace Aleafoodapi;
 
 use Illuminate\Database\Eloquent\Model;
 

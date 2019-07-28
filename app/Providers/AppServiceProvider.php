@@ -1,6 +1,6 @@
 <?php
 
-namespace aleafoodapi\Providers;
+namespace Aleafoodapi\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

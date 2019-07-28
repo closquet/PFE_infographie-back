@@ -1,8 +1,8 @@
 <?php
 
-namespace aleafoodapi\Http\Controllers;
+namespace Aleafoodapi\Http\Controllers;
 
-use aleafoodapi\Season;
+use Aleafoodapi\Season;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 

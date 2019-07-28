@@ -170,11 +170,11 @@ return [
         /*
          * Application Service Providers...
          */
-        aleafoodapi\Providers\AppServiceProvider::class,
-        aleafoodapi\Providers\AuthServiceProvider::class,
-        // aleafoodapi\Providers\BroadcastServiceProvider::class,
-        aleafoodapi\Providers\EventServiceProvider::class,
-        aleafoodapi\Providers\RouteServiceProvider::class,
+        Aleafoodapi\Providers\AppServiceProvider::class,
+        Aleafoodapi\Providers\AuthServiceProvider::class,
+        // Aleafoodapi\Providers\BroadcastServiceProvider::class,
+        Aleafoodapi\Providers\EventServiceProvider::class,
+        Aleafoodapi\Providers\RouteServiceProvider::class,
 
     ],
 

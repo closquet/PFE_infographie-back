@@ -1,8 +1,8 @@
 <?php
 
-namespace aleafoodapi\Http\Controllers;
+namespace Aleafoodapi\Http\Controllers;
 
-use aleafoodapi\User;
+use Aleafoodapi\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;

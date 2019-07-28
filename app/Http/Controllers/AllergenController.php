@@ -1,8 +1,8 @@
 <?php
 
-namespace aleafoodapi\Http\Controllers;
+namespace Aleafoodapi\Http\Controllers;
 
-use aleafoodapi\Allergen;
+use Aleafoodapi\Allergen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;

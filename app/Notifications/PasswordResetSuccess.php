@@ -1,5 +1,5 @@
 <?php
-namespace aleafoodapi\Notifications;
+namespace Aleafoodapi\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;

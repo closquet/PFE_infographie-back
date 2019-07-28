@@ -1,8 +1,8 @@
 <?php
 
-namespace aleafoodapi\Http\Controllers;
+namespace Aleafoodapi\Http\Controllers;
 
-use aleafoodapi\Recipe;
+use Aleafoodapi\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -27,6 +27,8 @@ class RecipeController extends Controller
             'cooking_time' => 'required|integer|max:5000',
             'ingredients' => 'required|array',
             'ingredients.*' => 'required|integer|exists:ingredients,id',
+            'tags' => 'present|array',
+            'tags.*' => 'integer|exists:tags,id',
         ]);
 
         $user = Auth::user();
@@ -39,6 +41,7 @@ class RecipeController extends Controller
         $recipe->user_id = $user->id;
         $recipe->save();
         $recipe->ingredients()->sync($request->ingredients);
+        $recipe->tags()->sync($request->tags);
         $recipe = $recipe->fresh();
 
         return $recipe;
@@ -83,6 +86,8 @@ class RecipeController extends Controller
             'cooking_time' => 'required|integer|max:5000',
             'ingredients' => 'required|array',
             'ingredients.*' => 'required|integer|exists:ingredients,id',
+            'tags' => 'present|array',
+            'tags.*' => 'integer|exists:tags,id',
         ]);
 
         $recipe->description = $request->description;
@@ -97,7 +102,7 @@ class RecipeController extends Controller
             $recipe->save();
         }
         $recipe->ingredients()->sync($request->ingredients);
-
+        $recipe->tags()->sync($request->tags);
 
         $recipe = $recipe->fresh();
 

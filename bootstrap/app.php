@@ -28,17 +28,17 @@ $app = new Illuminate\Foundation\Application(
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
-    aleafoodapi\Http\Kernel::class
+    Aleafoodapi\Http\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    aleafoodapi\Console\Kernel::class
+    Aleafoodapi\Console\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    aleafoodapi\Exceptions\Handler::class
+    Aleafoodapi\Exceptions\Handler::class
 );
 
 /*

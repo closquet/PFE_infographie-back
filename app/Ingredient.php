@@ -1,6 +1,6 @@
 <?php
 
-namespace aleafoodapi;
+namespace Aleafoodapi;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
@@ -39,26 +39,26 @@ class Ingredient extends Model
 
     public function allergens()
     {
-        return $this->belongsToMany('aleafoodapi\Allergen');
+        return $this->belongsToMany('Aleafoodapi\Allergen');
     }
 
     public function disliked_by_users()
     {
-        return $this->belongsToMany('aleafoodapi\User', 'user_dislikes_ingredient');
+        return $this->belongsToMany('Aleafoodapi\User', 'user_dislikes_ingredient');
     }
 
     public function subCategory()
     {
-        return $this->belongsTo('aleafoodapi\IngredientSubCat');
+        return $this->belongsTo('Aleafoodapi\IngredientSubCat');
     }
 
     public function seasons()
     {
-        return $this->belongsToMany('aleafoodapi\Season');
+        return $this->belongsToMany('Aleafoodapi\Season');
     }
 
     public function recipes()
     {
-        return $this->belongsToMany('aleafoodapi\Recipe');
+        return $this->belongsToMany('Aleafoodapi\Recipe');
     }
 }

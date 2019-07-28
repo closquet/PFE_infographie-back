@@ -1,9 +1,9 @@
 <?php
 
-namespace aleafoodapi\Http\Controllers;
+namespace Aleafoodapi\Http\Controllers;
 
 use Illuminate\Http\Request;
-use aleafoodapi\Ingredient;
+use Aleafoodapi\Ingredient;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;

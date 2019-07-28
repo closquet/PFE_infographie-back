@@ -1,6 +1,6 @@
 <?php
 
-namespace aleafoodapi\Http\Middleware;
+namespace Aleafoodapi\Http\Middleware;
 
 use Closure;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace aleafoodapi;
+namespace Aleafoodapi;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +26,7 @@ class Recipe extends Model
 
     protected $with = [
         'ingredients',
+        'tags',
     ];
 
     /**
@@ -44,11 +45,16 @@ class Recipe extends Model
 
     public function ingredients()
     {
-        return $this->belongsToMany('aleafoodapi\Ingredient');
+        return $this->belongsToMany('Aleafoodapi\Ingredient');
     }
 
     public function user()
     {
-        return $this->belongsTo('aleafoodapi\User');
+        return $this->belongsTo('Aleafoodapi\User');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('Aleafoodapi\Tag');
     }
 }

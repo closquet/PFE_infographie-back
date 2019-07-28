@@ -1,9 +1,9 @@
 <?php
 
-namespace aleafoodapi\Http\Controllers\Auth;
+namespace Aleafoodapi\Http\Controllers\Auth;
 
-use aleafoodapi\Http\Controllers\Controller;
-use aleafoodapi\User;
+use Aleafoodapi\Http\Controllers\Controller;
+use Aleafoodapi\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Http\Request;

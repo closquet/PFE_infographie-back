@@ -1,6 +1,6 @@
 <?php
 
-namespace aleafoodapi\Providers;
+namespace Aleafoodapi\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'aleafoodapi\Model' => 'aleafoodapi\Policies\ModelPolicy',
+        // 'Aleafoodapi\Model' => 'Aleafoodapi\Policies\ModelPolicy',
     ];
 
     /**

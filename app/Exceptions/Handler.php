@@ -1,6 +1,6 @@
 <?php
 
-namespace aleafoodapi\Exceptions;
+namespace Aleafoodapi\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

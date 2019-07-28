@@ -1,12 +1,12 @@
 <?php
-namespace aleafoodapi\Http\Controllers\Auth;
-use aleafoodapi\Http\Controllers\Controller;
+namespace Aleafoodapi\Http\Controllers\Auth;
+use Aleafoodapi\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use aleafoodapi\Notifications\PasswordResetRequest;
-use aleafoodapi\Notifications\PasswordResetSuccess;
-use aleafoodapi\User;
-use aleafoodapi\PasswordReset;
+use Aleafoodapi\Notifications\PasswordResetRequest;
+use Aleafoodapi\Notifications\PasswordResetSuccess;
+use Aleafoodapi\User;
+use Aleafoodapi\PasswordReset;
 use Illuminate\Support\Facades\Redirect;
 
 class PasswordResetController extends Controller

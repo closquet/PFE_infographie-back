@@ -66,6 +66,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'isadmin']], fun
     Route::put('/recipes/{slug}', 'RecipeController@update')->name('recipe.update');
     Route::delete('/recipes/{slug}', 'RecipeController@delete')->name('recipe.delete');
     Route::post('/recipes/{slug}/thumbnail', 'RecipeController@updateThumbnail')->name('recipe.update_thumbnail');
+
+    // Tags (index & show in public routes)
+    Route::post('/tags', 'TagController@store')->name('tag.store');
+    Route::put('/tags/{slug}', 'TagController@update')->name('tag.update');
+    Route::delete('/tags/{slug}', 'TagController@delete')->name('tag.delete');
 });
 
 
@@ -108,3 +113,7 @@ Route::get('/seasons/{slug}', 'SeasonController@show')->name('season.show');
 // Recipes
 Route::get('/recipes', 'RecipeController@index')->name('recipe.index');
 Route::get('/recipes/{slug}', 'RecipeController@show')->name('recipe.show');
+
+// Tags
+Route::get('/tags', 'TagController@index')->name('tag.index');
+Route::get('/tags/{slug}', 'TagController@show')->name('tag.show');
