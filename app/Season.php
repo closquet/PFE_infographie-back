@@ -27,7 +27,11 @@ class Season extends Model
         'name',
     ];
 
-    protected $hidden = array('pivot');
+    protected $hidden = [
+        'pivot',
+        'created_at',
+        'updated_at',
+    ];
 
     public function ingredients()
     {

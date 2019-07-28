@@ -30,11 +30,11 @@ class Ingredient extends Model
         'allergens',
     ];
 
-    protected $hidden = array('pivot');
-
-    protected $with = [
-        'allergens:id,name',
-        'seasons:id,name',
+    protected $hidden = [
+        'pivot',
+        'id',
+        'created_at',
+        'updated_at',
     ];
 
     public function allergens()

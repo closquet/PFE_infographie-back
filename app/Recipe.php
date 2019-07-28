@@ -24,9 +24,10 @@ class Recipe extends Model
         'ingredients',
     ];
 
-    protected $with = [
-        'ingredients',
-        'tags',
+    protected $hidden = [
+        'pivot',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -56,5 +57,10 @@ class Recipe extends Model
     public function tags()
     {
         return $this->belongsToMany('Aleafoodapi\Tag');
+    }
+
+    public function liked_by_users()
+    {
+        return $this->belongsToMany('Aleafoodapi\User', 'user_like_recipe');
     }
 }

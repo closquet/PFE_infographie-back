@@ -2,6 +2,7 @@
 
 namespace Aleafoodapi\Http\Controllers;
 
+use Aleafoodapi\Recipe;
 use Aleafoodapi\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,11 @@ class UserController extends Controller
      */
     public function showLoggedInUser (Request $request)
     {
-        $user = User::findOrFail($request->user()->id);
+        $user = User::with([
+            'allergens:name,slug',
+            'disliked_ingredients:name,slug',
+            'liked_recipes:slug',
+        ])->findOrFail($request->user()->id);
         return $user;
     }
 
@@ -55,6 +60,11 @@ class UserController extends Controller
         }
 
         $user = $user->fresh();
+        $user->load([
+            'allergens:name,slug',
+            'disliked_ingredients:name,slug',
+            'liked_recipes:slug',
+        ]);
 
         return response()->json($user)->setStatusCode(200);
     }
@@ -92,9 +102,13 @@ class UserController extends Controller
 
         $user->avatar = $path;
         $user->save();
+        $user->load([
+            'allergens:name,slug',
+            'disliked_ingredients:name,slug',
+            'liked_recipes:slug',
+        ]);
 
         return response()->json($user)->setStatusCode(200);
-
     }
 
     /**
@@ -110,6 +124,11 @@ class UserController extends Controller
         Storage::delete($user->avatar);
         $user->avatar = null;
         $user->save();
+        $user->load([
+            'allergens:name,slug',
+            'disliked_ingredients:name,slug',
+            'liked_recipes:slug',
+        ]);
 
         return response()->json($user)->setStatusCode(200);
     }
@@ -132,7 +151,11 @@ class UserController extends Controller
      */
     public function showBySlug($slug)
     {
-        $user = User::where('slug', $slug)->first();
+        $user = User::with([
+            'allergens:name,slug',
+            'disliked_ingredients:name,slug',
+            'liked_recipes:slug',
+        ])->where('slug', $slug)->first();
 
         if ($user){
             return response()->json([
@@ -147,5 +170,55 @@ class UserController extends Controller
         return response()->json([
             "error" => "User not found",
         ])->setStatusCode(404);
+    }
+
+
+    public function likeRecipe($slug)
+    {
+        $recipe = Recipe::where('slug',$slug)->first();
+
+        if (!$recipe) {
+            return response()->json(['error' => 'Recipe not found'], 404);
+        }
+
+        $user = Auth::user();
+
+
+        if (!$user->liked_recipes->where('slug',$slug)->first()){
+            $user->liked_recipes()->attach($recipe->id);
+            $user = $user->fresh();
+        }
+
+        $user->load([
+            'allergens:name,slug',
+            'disliked_ingredients:name,slug',
+            'liked_recipes:slug',
+        ]);
+
+        return $user;
+    }
+
+
+    public function removeLikeRecipe($slug)
+    {
+        $recipe = Recipe::where('slug',$slug)->first();
+
+        if (!$recipe) {
+            return response()->json(['error' => 'Recipe not found'], 404);
+        }
+
+        $user = Auth::user();
+
+        $user->liked_recipes()->detach($recipe->id);
+
+        $user = $user->fresh();
+
+        $user->load([
+            'allergens:name,slug',
+            'disliked_ingredients:name,slug',
+            'liked_recipes:slug',
+        ]);
+
+        return $user;
     }
 }

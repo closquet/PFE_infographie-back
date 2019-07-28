@@ -29,6 +29,12 @@ class IngredientSubCat extends Model
         'thumbnail',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'cat_id',
+    ];
+
     public function ingredients()
     {
         return $this->hasMany('Aleafoodapi\Ingredient');
@@ -36,6 +42,6 @@ class IngredientSubCat extends Model
 
     public function category()
     {
-        return $this->belongsTo('Aleafoodapi\IngredientCategory');
+        return $this->belongsTo('Aleafoodapi\IngredientCategory', 'cat_id', 'id');
     }
 }

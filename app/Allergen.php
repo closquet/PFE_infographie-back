@@ -28,7 +28,11 @@ class Allergen extends Model
         'thumbnail',
     ];
 
-    protected $hidden = array('pivot');
+    protected $hidden = [
+        'pivot',
+        'created_at',
+        'updated_at',
+    ];
 
     public function users()
     {

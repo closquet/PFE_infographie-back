@@ -5,7 +5,6 @@ namespace Aleafoodapi\Http\Controllers;
 use Illuminate\Http\Request;
 use Aleafoodapi\Ingredient;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
 
@@ -13,7 +12,7 @@ class IngredientController extends Controller
 {
     public function index()
     {
-        $ingredients = Ingredient::all();
+        $ingredients = Ingredient::all()->with(['']);
         return $ingredients;
     }
 

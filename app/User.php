@@ -32,7 +32,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
+        'pivot',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -42,12 +46,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-    ];
-
-    protected $with = [
-        'allergens:id,name',
-        'disliked_ingredients:id,name',
-        'recipes:id,name,slug',
     ];
 
     /**
@@ -75,8 +73,15 @@ class User extends Authenticatable
         return $this->belongsToMany('Aleafoodapi\Ingredient', 'user_dislikes_ingredient');
     }
 
+
     public function recipes()
     {
         return $this->hasMany('Aleafoodapi\Recipe');
+    }
+
+
+    public function liked_recipes()
+    {
+        return $this->belongsToMany('Aleafoodapi\Recipe', 'user_like_recipe');
     }
 }

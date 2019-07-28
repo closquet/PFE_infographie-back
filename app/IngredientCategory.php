@@ -28,11 +28,12 @@ class IngredientCategory extends Model
         'thumbnail',
     ];
 
-    protected $with = [
-        'subCategory:id,name',
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 
-    public function subCategory()
+    public function subCategories()
     {
         return $this->hasMany('Aleafoodapi\IngredientSubCat', 'cat_id');
     }

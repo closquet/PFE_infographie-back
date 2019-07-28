@@ -80,7 +80,7 @@ class IngredientCategoryController extends Controller
 
     public function show($slug)
     {
-        $category = IngredientCategory::where('slug',$slug)->first();
+        $category = IngredientCategory::with('subCategories')->where('slug',$slug)->first();
 
         if (!$category) {
             return response()->json(['error' => 'Ingredient category not found'], 404);

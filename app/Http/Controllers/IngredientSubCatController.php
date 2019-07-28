@@ -13,7 +13,7 @@ class IngredientSubCatController extends Controller
 {
     public function index()
     {
-        $ingredientSubCategories = IngredientSubCat::all();
+        $ingredientSubCategories = IngredientSubCat::get();
         return $ingredientSubCategories;
     }
 
@@ -85,7 +85,7 @@ class IngredientSubCatController extends Controller
 
     public function show($slug)
     {
-        $ingredientSubCategory = IngredientSubCat::where('slug',$slug)->first();
+        $ingredientSubCategory = IngredientSubCat::with('category')->where('slug',$slug)->first();
 
         if (!$ingredientSubCategory) {
             return response()->json(['error' => 'Ingredient sub category not found'], 404);

@@ -34,7 +34,11 @@ class AuthController extends Controller
             ]);
             $response = json_decode((string) $response->getBody(), true);
 
-            $user = User::where('email', $request->email)->firstOrFail();
+            $user = User::with([
+                'allergens:name,slug',
+                'disliked_ingredients:name,slug',
+                'liked_recipes:slug',
+                ])->where('email', $request->email)->firstOrFail();
 
             $user['tokens'] = $response;
 
@@ -63,7 +67,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        $user =  User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),

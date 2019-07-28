@@ -111,7 +111,7 @@ class RecipeController extends Controller
 
     public function show($slug)
     {
-        $recipes = Recipe::where('slug',$slug)->first();
+        $recipes = Recipe::with(['user'])->where('slug',$slug)->first();
 
         if (!$recipes) {
             return response()->json(['error' => 'Recipe not found'], 404);
@@ -133,7 +133,7 @@ class RecipeController extends Controller
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $recipe = Recipe::where('slug',$slug)->first();
+        $recipe = Recipe::with(['user'])->where('slug',$slug)->first();
 
         if (!$recipe) {
             return response()->json(['error' => 'Recipe not found'], 404);
