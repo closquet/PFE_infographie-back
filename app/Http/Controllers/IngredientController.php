@@ -12,7 +12,7 @@ class IngredientController extends Controller
 {
     public function index()
     {
-        $ingredients = Ingredient::all()->with(['']);
+        $ingredients = Ingredient::with(['allergens:name,slug',])->get();
         return $ingredients;
     }
 
