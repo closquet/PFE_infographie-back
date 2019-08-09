@@ -19,6 +19,7 @@ class Kernel extends HttpKernel
         \Aleafoodapi\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Aleafoodapi\Http\Middleware\TrustProxies::class,
+        'cors' => \Aleafoodapi\Http\Middleware\Cors::class,
     ];
 
     /**
@@ -61,6 +62,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'isadmin' => \Aleafoodapi\Http\Middleware\IsAdmin::class,
+        'cors' => \Aleafoodapi\Http\Middleware\Cors::class,
     ];
 
     /**

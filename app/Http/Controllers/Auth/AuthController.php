@@ -20,6 +20,10 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        if ( env('RECAPTCHA_ENABLED') && !$this->checkRecaptcha($request->token) ) {
+            return response()->json(['error' => 'Bad reCaptcha result.'], 401);
+        }
+
         $http = new Client;
 
         try {
@@ -111,7 +115,24 @@ class AuthController extends Controller
             } else if ($error->getCode() === 401) {
                 return response()->json('Your credentials are incorrect. Please try again', $error->getCode());
             }
-            return response()->json('Something went wrong on the server.', $error->getCode());
+        }
+    }
+
+
+    public function checkRecaptcha($token) {
+        $http = new Client;
+        try {
+            $response = $http->post('https://www.google.com/recaptcha/api/siteverify', [
+                'form_params' => [
+                    'secret' => env('RECAPTCHA_SECRET_KEY'),
+                    'response' => $token,
+                ]
+            ]);
+
+            return json_decode( $response->getBody(), true )['success'];
+
+        } catch (BadResponseException $error) {
+            return response()->json(['error' => 'Something went wrong on the server.'], $error->getCode());
         }
     }
 }

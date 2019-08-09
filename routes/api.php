@@ -19,6 +19,7 @@ Route::post('/register', 'Auth\AuthController@register')->name('user.register');
 Route::post('/login', 'Auth\AuthController@login')->name('user.login');
 Route::post('/refresh-token', 'Auth\AuthController@refresh')->name('user.refresh');
 Route::post('/logout', 'Auth\AuthController@logout')->middleware('auth:api')->name('user.logout');
+Route::post('/checkRecaptcha', 'Auth\AuthController@checkRecaptcha')->name('user.checkRecaptcha');
 
 
 
