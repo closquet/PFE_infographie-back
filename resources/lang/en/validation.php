@@ -132,6 +132,7 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'reCaptha' => 'Expired reCaptcha, please retest reCaptcha',
     ],
 
     /*
