@@ -14,6 +14,8 @@ return [
     */
 
     'failed' => 'These credentials do not match our records.',
+    'failed_password' => 'Bad password.',
+    'failed_newpassword_oldpassword' => 'Old and new password are required.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
