@@ -41,6 +41,7 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
+            'localization',
         ],
     ];
 
@@ -63,6 +64,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'isadmin' => \Aleafoodapi\Http\Middleware\IsAdmin::class,
         'cors' => \Aleafoodapi\Http\Middleware\Cors::class,
+        'localization' => \Aleafoodapi\Http\Middleware\Localization::class,
     ];
 
     /**
