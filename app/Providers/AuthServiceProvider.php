@@ -31,11 +31,7 @@ class AuthServiceProvider extends ServiceProvider
 //            $router->forTransientTokens();
         });
 
-        Passport::tokensExpireIn(now()->addMinutes(1000000));
-
+        Passport::tokensExpireIn(now()->addDays(1));
         Passport::refreshTokensExpireIn(now()->addDays(10));
-
-        Passport::personalAccessTokensExpireIn(now()->addMinutes(10));
-        //
     }
 }
