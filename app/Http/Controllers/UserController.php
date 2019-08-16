@@ -6,6 +6,7 @@ use Aleafoodapi\Recipe;
 use Aleafoodapi\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -20,8 +21,8 @@ class UserController extends Controller
     public function showLoggedInUser (Request $request)
     {
         $user = User::with([
-            'allergens:name,slug',
-            'disliked_ingredients:name,slug',
+            'allergens:name,id',
+            'disliked_ingredients:name,id',
             'liked_recipes:slug',
         ])->findOrFail($request->user()->id);
         return $user;
@@ -36,21 +37,55 @@ class UserController extends Controller
     public function editLoggedInUser (Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
+            'old_password' => 'nullable|string|min:8',
+            'new_password' => 'nullable|string|min:8',
             'description' => 'nullable|string|max:255',
             'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
-            'disliked_ingredients' => 'present|array',
-            'disliked_ingredients.*' => 'integer|exists:ingredients,id',
+//            'disliked_ingredients' => 'present|array',
+//            'disliked_ingredients.*' => 'integer|exists:ingredients,id',
         ]);
 
         $user = Auth::user();
+        $user->load([
+            'allergens:name,id',
+            'disliked_ingredients:name,id',
+            'liked_recipes:slug',
+        ]);
+        $user['tokens'] = ['access_token' => $request->bearerToken()];
 
+        $token = $user->createToken('Token Name') ;
+
+        $user['test'] = $token;
+
+        return response()->json($user)->setStatusCode(200);
+
+        if ( ($request->new_password && !$request->old_password) || (!$request->new_password && $request->old_password) ) {
+            return response()->json(['error' => __('auth.failed_newpassword_oldpassword')], 401);
+        }
+
+        if ($request->new_password && $request->old_password && !Hash::check($request->old_password, $user->password)) {
+            return response()->json(['error' => __('auth.failed_password')], 401);
+        }
+
+        if ($request->old_password && $request->new_password && !Hash::check($request->new_password, $user->password)) {
+            $user->password = Hash::make($request->new_password);
+        }
+
+        if ($request->allergens != $user->allergens) {
             $user->allergens()->sync($request->allergens);
-            $user->disliked_ingredients()->sync($request->disliked_ingredients);
-            $user->description = $request->description;
+        }
 
-        if ($request->name != $user->name){
+//        if ($request->disliked_ingredients != $user->disliked_ingredients) {
+//            $user->disliked_ingredients()->sync($request->disliked_ingredients);
+//        }
+
+        if ($request->description != $user->description) {
+            $user->description = $request->description;
+        }
+
+        if ($request->name && $request->name != $user->name){
             $user->slug = null;
             $user->update([
                 'name' => $request->name,
@@ -61,10 +96,11 @@ class UserController extends Controller
 
         $user = $user->fresh();
         $user->load([
-            'allergens:name,slug',
-            'disliked_ingredients:name,slug',
+            'allergens:name,id',
+            'disliked_ingredients:name,id',
             'liked_recipes:slug',
         ]);
+        $user['tokens'] = ['access_token' => $request->bearerToken()];
 
         return response()->json($user)->setStatusCode(200);
     }
@@ -103,8 +139,8 @@ class UserController extends Controller
         $user->avatar = $path;
         $user->save();
         $user->load([
-            'allergens:name,slug',
-            'disliked_ingredients:name,slug',
+            'allergens:name,id',
+            'disliked_ingredients:name,id',
             'liked_recipes:slug',
         ]);
 
@@ -125,8 +161,8 @@ class UserController extends Controller
         $user->avatar = null;
         $user->save();
         $user->load([
-            'allergens:name,slug',
-            'disliked_ingredients:name,slug',
+            'allergens:name,id',
+            'disliked_ingredients:name,id',
             'liked_recipes:slug',
         ]);
 
@@ -152,8 +188,8 @@ class UserController extends Controller
     public function showBySlug($slug)
     {
         $user = User::with([
-            'allergens:name,slug',
-            'disliked_ingredients:name,slug',
+            'allergens:name,id',
+            'disliked_ingredients:name,id',
             'liked_recipes:slug',
         ])->where('slug', $slug)->first();
 
@@ -190,8 +226,8 @@ class UserController extends Controller
         }
 
         $user->load([
-            'allergens:name,slug',
-            'disliked_ingredients:name,slug',
+            'allergens:name,id',
+            'disliked_ingredients:name,id',
             'liked_recipes:slug',
         ]);
 
