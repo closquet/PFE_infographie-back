@@ -7,6 +7,7 @@ use Aleafoodapi\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -20,10 +21,6 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        if ( env('RECAPTCHA_ENABLED') && !$this->checkRecaptcha($request->token) ) {
-            return response()->json(['error' => 'Bad reCaptcha result.'], 401);
-        }
-
         $http = new Client;
 
         try {
@@ -39,9 +36,9 @@ class AuthController extends Controller
             $response = json_decode((string) $response->getBody(), true);
 
             $user = User::with([
-                'allergens:name,slug',
-                'disliked_ingredients:name,slug',
-                'liked_recipes:slug',
+                'allergens:name,slug,id',
+                'disliked_ingredients:name,slug,id',
+                'liked_recipes:slug,id',
                 ])->where('email', $request->email)->firstOrFail();
 
             $user['tokens'] = $response;
@@ -49,9 +46,9 @@ class AuthController extends Controller
             return $user;
         } catch (BadResponseException $error) {
             if ($error->getCode() === 400) {
-                return response()->json(['error' => 'Invalid Request. Please enter an email and a password.'], $error->getCode());
+                return response()->json(['error' => __('auth.failed')], $error->getCode());
             } else if ($error->getCode() === 401) {
-                return response()->json(['error' => 'Your credentials are incorrect. Please try again'], $error->getCode());
+                return response()->json(['error' => __('auth.failed')], $error->getCode());
             }
             return response()->json(['error' => 'Something went wrong on the server.'], $error->getCode());
         }
@@ -65,10 +62,14 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
+        if ( env('RECAPTCHA_ENABLED') && !$this->checkRecaptcha($request->token) ) {
+            return response()->json(['error' => __('validation.custom.reCaptha')], 401);
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:8',
         ]);
 
         User::create([
@@ -113,7 +114,7 @@ class AuthController extends Controller
             if ($error->getCode() === 400) {
                 return response()->json('Invalid Request. Please enter an email and a password.', $error->getCode());
             } else if ($error->getCode() === 401) {
-                return response()->json('Your credentials are incorrect. Please try again', $error->getCode());
+                return response()->json(__('auth.failed'), $error->getCode());
             }
         }
     }
