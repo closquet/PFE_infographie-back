@@ -53,13 +53,6 @@ class UserController extends Controller
             'disliked_ingredients:name,id',
             'liked_recipes:slug',
         ]);
-        $user['tokens'] = ['access_token' => $request->bearerToken()];
-
-        $token = $user->createToken('Token Name') ;
-
-        $user['test'] = $token;
-
-        return response()->json($user)->setStatusCode(200);
 
         if ( ($request->new_password && !$request->old_password) || (!$request->new_password && $request->old_password) ) {
             return response()->json(['error' => __('auth.failed_newpassword_oldpassword')], 401);
@@ -100,7 +93,6 @@ class UserController extends Controller
             'disliked_ingredients:name,id',
             'liked_recipes:slug',
         ]);
-        $user['tokens'] = ['access_token' => $request->bearerToken()];
 
         return response()->json($user)->setStatusCode(200);
     }
