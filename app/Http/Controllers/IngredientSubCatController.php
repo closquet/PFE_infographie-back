@@ -13,7 +13,9 @@ class IngredientSubCatController extends Controller
 {
     public function index()
     {
-        $ingredientSubCategories = IngredientSubCat::get();
+        $ingredientSubCategories = IngredientSubCat::with([
+            'category:id',
+        ])->get();
         return $ingredientSubCategories;
     }
 
