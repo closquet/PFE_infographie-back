@@ -22,12 +22,19 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|min:2|max:30|unique:recipes',
-            'description' => 'nullable|string|max:255',
+            'name' => 'required|string|min:2|max:50|unique:recipes',
+            'description' => 'nullable|string|max:500',
             'preparation_time' => 'required|integer|max:5000',
             'cooking_time' => 'required|integer|max:5000',
+
             'ingredients' => 'required|array',
-            'ingredients.*' => 'required|integer|exists:ingredients,id',
+            'ingredients.*' => 'required|array',
+
+            'ingredients.*.ingredient_id' => 'required|integer|exists:ingredients,id',
+            'ingredients.*.detail' => 'nullable|string|max:50',
+            'ingredients.*.amount' => 'required|numeric|max:50000',
+            'ingredients.*.measure' => 'required|string|max:50',
+
             'tags' => 'present|array',
             'tags.*' => 'integer|exists:tags,id',
             'steps' => 'required|array',
@@ -35,7 +42,6 @@ class RecipeController extends Controller
         ]);
 
         $recipe = new Recipe;
-
         $user = Auth::user();
 
         $recipe->name = $request->name;
@@ -45,6 +51,14 @@ class RecipeController extends Controller
         $recipe->user_id = $user->id;
         $recipe->save();
 
+        foreach ($request->ingredients as $key => $value){
+            $recipe->ingredients()->attach($value['ingredient_id'], [
+                'detail'=> $value['detail'],
+                'amount'=> $value['amount'],
+                'measure'=> $value['measure'],
+            ]);
+        }
+
         foreach ($request->steps as $key => $value){
             $recipe->steps()->create([
                 'step_number'=> $key + 1,
@@ -52,13 +66,12 @@ class RecipeController extends Controller
             ]);
         }
 
-        $recipe->ingredients()->sync($request->ingredients);
         $recipe->tags()->sync($request->tags);
         $recipe = $recipe->fresh();
 
-        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user', 'steps');
+        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user:name,slug,avatar', 'steps');
 
-        return $recipe;
+        return response()->json($recipe);
     }
 
     public function delete($slug)
@@ -92,14 +105,21 @@ class RecipeController extends Controller
 
         $request->validate([
             'name' => [
-                'required','string','min:2','max:30',
+                'required','string','min:2','max:50',
                 Rule::unique('recipes')->ignore($recipe->id),
             ],
-            'description' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:500',
             'preparation_time' => 'required|integer|max:5000',
             'cooking_time' => 'required|integer|max:5000',
+
             'ingredients' => 'required|array',
-            'ingredients.*' => 'required|integer|exists:ingredients,id',
+            'ingredients.*' => 'required|array',
+
+            'ingredients.*.ingredient_id' => 'required|integer|exists:ingredients,id',
+            'ingredients.*.detail' => 'nullable|string|max:50',
+            'ingredients.*.amount' => 'required|numeric|max:50000',
+            'ingredients.*.measure' => 'required|string|max:50',
+
             'tags' => 'present|array',
             'tags.*' => 'integer|exists:tags,id',
             'steps' => 'required|array',
@@ -117,6 +137,7 @@ class RecipeController extends Controller
         $recipe->description = $request->description;
         $recipe->preparation_time = $request->preparation_time;
         $recipe->cooking_time = $request->cooking_time;
+
         if ($request->name != $recipe->name){
             $recipe->slug = null;
             $recipe->update([
@@ -125,11 +146,21 @@ class RecipeController extends Controller
         }else {
             $recipe->save();
         }
-        $recipe->ingredients()->sync($request->ingredients);
+
+        $recipe->ingredients()->detach();
+
+        foreach ($request->ingredients as $key => $value){
+            $recipe->ingredients()->attach($value['ingredient_id'], [
+                'detail'=> $value['detail'],
+                'amount'=> $value['amount'],
+                'measure'=> $value['measure'],
+            ]);
+        }
+
         $recipe->tags()->sync($request->tags);
 
         $recipe = $recipe->fresh();
-        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user', 'steps');
+        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user:name,slug,avatar', 'steps');
 
         return $recipe;
     }
@@ -143,7 +174,7 @@ class RecipeController extends Controller
             return response()->json(['error' => 'Recipe not found'], 404);
         }
 
-        return $recipes;
+        return response()->json($recipes);
     }
 
 
@@ -205,6 +236,6 @@ class RecipeController extends Controller
         $recipe->thumbnail = $thumbnailPath;
         $recipe->save();
 
-        return $recipe;
+        return response()->json($recipe);
     }
 }
