@@ -12,14 +12,17 @@ class IngredientController extends Controller
 {
     public function index()
     {
-        $ingredients = Ingredient::with(['allergens:name,slug',])->get();
+        $ingredients = Ingredient::with([
+            'allergens:name,slug,id',
+            'seasons:name,slug,id',
+        ])->get();
         return $ingredients;
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|min:2|max:30|unique:ingredients',
+            'name' => 'required|string|min:2|max:50|unique:ingredients',
             'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
             'seasons' => 'present|array',
@@ -34,6 +37,11 @@ class IngredientController extends Controller
         $ingredient->allergens()->sync($request->allergens);
         $ingredient->seasons()->sync($request->seasons);
         $ingredient = $ingredient->fresh();
+
+        $ingredient->load([
+            'allergens:name,slug,id',
+            'seasons:name,slug,id',
+        ]);
 
         return $ingredient;
     }
@@ -67,7 +75,7 @@ class IngredientController extends Controller
 
         $request->validate([
             'name' => [
-                'required','string','min:2','max:30',
+                'required','string','min:2','max:50',
                 Rule::unique('ingredients')->ignore($ingredient->id),
             ],
             'allergens' => 'present|array',
@@ -92,6 +100,11 @@ class IngredientController extends Controller
         }
 
         $ingredient = $ingredient->fresh();
+
+        $ingredient->load([
+            'allergens:name,slug,id',
+            'seasons:name,slug,id',
+        ]);
 
         return $ingredient;
     }
