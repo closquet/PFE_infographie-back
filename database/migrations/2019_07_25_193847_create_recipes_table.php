@@ -17,12 +17,13 @@ class CreateRecipesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('slug')->unique();
-            $table->integer('preparation_time');
-            $table->integer('cooking_time');
+            $table->integer('preparation_time')->unsigned();
+            $table->integer('cooking_time')->unsigned();
             $table->longText('description')->nullable();
             $table->bigInteger('user_id')->unsigned()->index()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->string('thumbnail')->nullable();
+            $table->integer('likes')->unsigned()->nullable();
             $table->timestamps();
         });
     }
