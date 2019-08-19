@@ -36,7 +36,6 @@ class User extends Authenticatable
         'remember_token',
         'pivot',
         'email_verified_at',
-        'is_admin',
         'deleted_at',
         'created_at',
         'updated_at',
