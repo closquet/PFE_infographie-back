@@ -43,8 +43,8 @@ class UserController extends Controller
             'description' => 'nullable|string|max:255',
             'allergens' => 'present|array',
             'allergens.*' => 'integer|exists:allergens,id',
-//            'disliked_ingredients' => 'present|array',
-//            'disliked_ingredients.*' => 'integer|exists:ingredients,id',
+            'disliked_ingredients' => 'present|array',
+            'disliked_ingredients.*' => 'integer|exists:ingredients,id',
         ]);
 
         $user = Auth::user();
@@ -70,9 +70,9 @@ class UserController extends Controller
             $user->allergens()->sync($request->allergens);
         }
 
-//        if ($request->disliked_ingredients != $user->disliked_ingredients) {
-//            $user->disliked_ingredients()->sync($request->disliked_ingredients);
-//        }
+        if ($request->disliked_ingredients != $user->disliked_ingredients) {
+            $user->disliked_ingredients()->sync($request->disliked_ingredients);
+        }
 
         if ($request->description != $user->description) {
             $user->description = $request->description;
