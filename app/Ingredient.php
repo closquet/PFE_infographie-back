@@ -32,7 +32,6 @@ class Ingredient extends Model
 
     protected $hidden = [
         'pivot',
-        'id',
         'created_at',
         'updated_at',
     ];
