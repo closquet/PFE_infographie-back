@@ -10,14 +10,14 @@ class TagController extends Controller
 {
     public function index()
     {
-        $tags = Tag::all();
+        $tags = Tag::orderBy('created_at', 'desc')->get();
         return $tags;
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|min:2|max:30|unique:tags',
+            'name' => 'required|string|min:2|max:50|unique:tags',
         ]);
 
         $tag = new Tag;
@@ -51,7 +51,7 @@ class TagController extends Controller
 
         $request->validate([
             'name' => [
-                'required','string','min:2','max:30',
+                'required','string','min:2','max:50',
                 Rule::unique('tags')->ignore($tag->id),
             ],
         ]);

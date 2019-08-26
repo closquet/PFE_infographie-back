@@ -13,14 +13,14 @@ class AllergenController extends Controller
 {
     public function index()
     {
-        $allergens = Allergen::all();
+        $allergens = Allergen::orderBy('created_at', 'desc')->get();
         return $allergens;
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|min:2|max:30|unique:allergens',
+            'name' => 'required|string|min:2|max:50|unique:allergens',
         ]);
 
         $allergen = Allergen::create([
@@ -59,7 +59,7 @@ class AllergenController extends Controller
 
         $request->validate([
             'name' => [
-                'required','string','min:2','max:30',
+                'required','string','min:2','max:50',
                 Rule::unique('allergens')->ignore($allergen->id),
             ],
         ]);
@@ -97,7 +97,7 @@ class AllergenController extends Controller
     public function updateThumbnail(Request $request, $slug)
     {
         $request->validate([
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $allergen = Allergen::where('slug',$slug)->first();

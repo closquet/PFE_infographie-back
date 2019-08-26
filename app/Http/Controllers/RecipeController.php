@@ -15,7 +15,7 @@ class RecipeController extends Controller
 {
     public function index()
     {
-        $recipes = Recipe::all();
+        $recipes = Recipe::orderBy('created_at', 'desc')->get();
         return $recipes;
     }
 
@@ -69,7 +69,7 @@ class RecipeController extends Controller
         $recipe->tags()->sync($request->tags);
         $recipe = $recipe->fresh();
 
-        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user:name,slug,avatar', 'steps');
+        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user:name,slug,avatar', 'steps', 'tags');
 
         return response()->json($recipe);
     }
@@ -160,21 +160,21 @@ class RecipeController extends Controller
         $recipe->tags()->sync($request->tags);
 
         $recipe = $recipe->fresh();
-        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user:name,slug,avatar', 'steps');
+        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user:name,slug,avatar', 'steps', 'tags');
 
         return $recipe;
     }
 
     public function show($slug)
     {
-        $recipes = Recipe::where('slug',$slug)->first();
-        $recipes->load('ingredients', 'ingredients.allergens:name,slug', 'user', 'steps');
+        $recipe = Recipe::where('slug',$slug)->first();
+        $recipe->load('ingredients:ingredient_id,name,detail,amount,measure', 'ingredients.allergens:name,slug', 'user:name,slug,avatar', 'steps', 'tags');
 
-        if (!$recipes) {
+        if (!$recipe) {
             return response()->json(['error' => 'Recipe not found'], 404);
         }
 
-        return response()->json($recipes);
+        return response()->json($recipe);
     }
 
 
@@ -187,7 +187,7 @@ class RecipeController extends Controller
     public function updateThumbnail(Request $request, $slug)
     {
         $request->validate([
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gifg|max:2048',
         ]);
 
         $recipe = Recipe::with(['user'])->where('slug',$slug)->first();
@@ -197,9 +197,9 @@ class RecipeController extends Controller
         }
 
         if ($recipe->thumbnail) {
-            Storage::delete($recipe->thumbnail);
             Storage::delete(str_replace("thumbnail", "banner", $recipe->thumbnail));
             Storage::delete(str_replace("thumbnail", "largeBanner", $recipe->thumbnail));
+            Storage::delete($recipe->thumbnail);
             $recipe->thumbnail = null;
         }
         $thumbnailName = $recipe->slug.'_thumbnail'.time().'.'.request()->thumbnail->getClientOriginalExtension();
@@ -214,7 +214,7 @@ class RecipeController extends Controller
         $banner = Image::make(Storage::get($bannerPath));
         $bannerLarge = Image::make(Storage::get($bannerLargePath));
 
-        $thumbnail->fit(335, 86, function ($constraint) {
+        $thumbnail->fit(400, 400, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
@@ -236,6 +236,28 @@ class RecipeController extends Controller
         $recipe->thumbnail = $thumbnailPath;
         $recipe->save();
 
+        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user:name,slug,avatar', 'steps', 'tags');
+
         return response()->json($recipe);
+    }
+
+
+    public function deleteThumbnail($slug)
+    {
+        $recipe = Recipe::where('slug',$slug)->first();
+
+        if (!$recipe) {
+            return response()->json(['error' => 'Recipe not found'], 404);
+        }
+
+        Storage::delete(str_replace("thumbnail", "banner", $recipe->thumbnail));
+        Storage::delete(str_replace("thumbnail", "largeBanner", $recipe->thumbnail));
+        Storage::delete($recipe->thumbnail);
+        $recipe->thumbnail = null;
+        $recipe->save();
+
+        $recipe->load('ingredients', 'ingredients.allergens:name,slug', 'user:name,slug,avatar', 'steps', 'tags');
+
+        return response()->json($recipe)->setStatusCode(200);
     }
 }

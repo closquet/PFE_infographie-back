@@ -22,7 +22,7 @@ class IngredientSubCatController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|min:2|max:30|unique:ingredient_sub_cats',
+            'name' => 'required|string|min:2|max:50|unique:ingredient_sub_cats',
             'cat_id' => 'required|integer|exists:ingredient_categories,id',
         ]);
 
@@ -65,7 +65,7 @@ class IngredientSubCatController extends Controller
 
         $request->validate([
             'name' => [
-                'required','string','min:2','max:30',
+                'required','string','min:2','max:50',
                 Rule::unique('ingredient_sub_cats')->ignore($ingredientSubCategory->id),
             ],
             'cat_id' => 'required|integer|exists:ingredient_categories,id',
@@ -106,7 +106,7 @@ class IngredientSubCatController extends Controller
     public function updateThumbnail(Request $request, $slug)
     {
         $request->validate([
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $ingredientSubCategories = IngredientSubCat::where('slug',$slug)->first();

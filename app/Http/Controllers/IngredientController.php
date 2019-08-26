@@ -15,7 +15,7 @@ class IngredientController extends Controller
         $ingredients = Ingredient::with([
             'allergens:name,slug,id',
             'seasons:name,slug,id',
-        ])->get();
+        ])->orderBy('created_at', 'desc')->get();
         return $ingredients;
     }
 
@@ -117,6 +117,11 @@ class IngredientController extends Controller
             return response()->json(['error' => 'Ingredient not found'], 404);
         }
 
+        $ingredient->load([
+            'allergens:name,slug,id',
+            'seasons:name,slug,id',
+        ]);
+
         return $ingredient;
     }
 
@@ -130,7 +135,7 @@ class IngredientController extends Controller
     public function updateThumbnail(Request $request, $slug)
     {
         $request->validate([
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $ingredient = Ingredient::where('slug',$slug)->first();
@@ -159,6 +164,27 @@ class IngredientController extends Controller
 
         $ingredient->thumbnail = $thumbnailsPath;
         $ingredient->save();
+
+        return response()->json($ingredient)->setStatusCode(200);
+    }
+
+
+    public function deleteThumbnail($slug)
+    {
+        $ingredient = Ingredient::where('slug',$slug)->first();
+
+        if (!$ingredient) {
+            return response()->json(['error' => 'Ingredient not found'], 404);
+        }
+
+        Storage::delete($ingredient->thumbnail);
+        $ingredient->thumbnail = null;
+        $ingredient->save();
+
+        $ingredient->load([
+            'allergens:name,slug,id',
+            'seasons:name,slug,id',
+        ]);
 
         return response()->json($ingredient)->setStatusCode(200);
     }

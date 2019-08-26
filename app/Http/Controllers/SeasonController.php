@@ -17,7 +17,7 @@ class SeasonController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|min:2|max:30|unique:seasons',
+            'name' => 'required|string|min:2|max:50|unique:seasons',
         ]);
 
         $season = new Season;
@@ -51,7 +51,7 @@ class SeasonController extends Controller
 
         $request->validate([
             'name' => [
-                'required','string','min:2','max:30',
+                'required','string','min:2','max:50',
                 Rule::unique('seasons')->ignore($season->id),
             ],
         ]);

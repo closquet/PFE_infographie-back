@@ -20,7 +20,7 @@ class IngredientCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|min:2|max:30|unique:ingredient_categories',
+            'name' => 'required|string|min:2|max:50|unique:ingredient_categories',
         ]);
 
         $category = new IngredientCategory;
@@ -61,7 +61,7 @@ class IngredientCategoryController extends Controller
 
         $request->validate([
             'name' => [
-                'required','string','min:2','max:30',
+                'required','string','min:2','max:50',
                 Rule::unique('ingredient_categories')->ignore($category->id),
             ],
         ]);
@@ -99,7 +99,7 @@ class IngredientCategoryController extends Controller
     public function updateThumbnail(Request $request, $slug)
     {
         $request->validate([
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $category = IngredientCategory::where('slug',$slug)->first();
