@@ -19,6 +19,7 @@ class CreateRecipesTable extends Migration
             $table->string('slug')->unique();
             $table->integer('preparation_time')->unsigned();
             $table->integer('cooking_time')->unsigned();
+            $table->integer('persons')->unsigned();
             $table->longText('description')->nullable();
             $table->bigInteger('user_id')->unsigned()->index()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
