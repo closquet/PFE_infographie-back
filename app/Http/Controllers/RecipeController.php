@@ -26,6 +26,7 @@ class RecipeController extends Controller
             'description' => 'nullable|string|max:500',
             'preparation_time' => 'required|integer|max:5000',
             'cooking_time' => 'required|integer|max:5000',
+            'persons' => 'required|integer|max:100',
 
             'ingredients' => 'required|array',
             'ingredients.*' => 'required|array',
@@ -48,6 +49,7 @@ class RecipeController extends Controller
         $recipe->description = $request->description;
         $recipe->preparation_time = $request->preparation_time;
         $recipe->cooking_time = $request->cooking_time;
+        $recipe->persons = $request->persons;
         $recipe->user_id = $user->id;
         $recipe->save();
 
@@ -111,6 +113,7 @@ class RecipeController extends Controller
             'description' => 'nullable|string|max:500',
             'preparation_time' => 'required|integer|max:5000',
             'cooking_time' => 'required|integer|max:5000',
+            'persons' => 'required|integer|max:100',
 
             'ingredients' => 'required|array',
             'ingredients.*' => 'required|array',
@@ -137,6 +140,7 @@ class RecipeController extends Controller
         $recipe->description = $request->description;
         $recipe->preparation_time = $request->preparation_time;
         $recipe->cooking_time = $request->cooking_time;
+        $recipe->persons = $request->persons;
 
         if ($request->name != $recipe->name){
             $recipe->slug = null;
